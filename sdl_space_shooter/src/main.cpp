@@ -1,11 +1,15 @@
 #include "pch.h"
-#include <SDL.h>
-#include "image_loader.h"
+#define SDL_MAIN_HANDLED
 
-constexpr int SCREEN_WIDTH = 640;
+#include "application/application.h"
+#include "application/application_props.h"
+
+//#include "image_loader.h"
+
+/*constexpr int SCREEN_WIDTH = 640;
 constexpr int SCREEN_HEIGHT = 480;
 
-struct Application
+struct Application2
 {
     SDL_Window* window = nullptr;
     SDL_Renderer* renderer = nullptr;
@@ -50,12 +54,16 @@ SDL_Window* InitializeApplication()
     }
 
     return window;
-}
+}*/
 
 int main(int argc, char* args[])
 {
-    
-    SDL_Window* window = InitializeApplication();
+    application::application app = application::application(application::application_props("SDL Space Shooter", 800, 600));
+
+    app.init();
+    app.run_game();
+
+    /*SDL_Window* window = InitializeApplication();
     
     if (!window)
     {
@@ -103,6 +111,10 @@ int main(int argc, char* args[])
 
     IMG_Quit();
     SDL_Quit();
+
+    */
+
+    return 0;
 }
 
 
