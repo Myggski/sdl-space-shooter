@@ -14,6 +14,7 @@ namespace ecs
     {
     public:
         virtual ~system() = default;
+        virtual void update(float dt) const = 0;
 
     protected:
         template<typename ...Ts>

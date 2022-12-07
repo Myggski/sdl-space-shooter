@@ -3,8 +3,9 @@
 #include "application_props.h"
 #include "window_data.h"
 #include "events.h"
+#include "texture_manager.h"
 #include "timer.h"
-#include "input.h"
+#include "keyboard.h"
 
 namespace application
 {
@@ -18,8 +19,9 @@ namespace application
 	private:
 		window_data window_data;
 		events events;
+		keyboard keyboard_input;
+		texture_manager texture_manager;
 		timer time;
-		input key_input;
 		SDL_Window* window;
 		bool is_running;
 		void quit();
@@ -27,12 +29,13 @@ namespace application
 		{
 			is_running = false;
 		};
-		input_callback key_pressed_quit = [this](SDL_EventType event_type)
+		event_callback on_key_down = [&](SDL_Event event)
 		{
-			if (event_type == SDL_KEYUP)
-			{
-				is_running = false;
-			}
+			keyboard_input.on_key_pressed(event);
+		};
+		event_callback on_key_released = [&](SDL_Event event)
+		{
+			keyboard_input.on_key_released(event);
 		};
 	};
 }

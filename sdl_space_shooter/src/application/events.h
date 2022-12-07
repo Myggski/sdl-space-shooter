@@ -3,6 +3,7 @@
 #include <functional>
 #include <unordered_map>
 #include <SDL_events.h>
+#include "keyboard.h"
 
 namespace application
 {
@@ -18,11 +19,6 @@ namespace application
 		void add_listener(const SDL_EventType& eventType, event_callback* callback);
 		void remove_listener(const SDL_EventType& eventType, event_callback* callback);
 		void clear();
-		inline void setup_input_events(event_callback* key_press_callback)
-		{
-			add_listener(SDL_KEYDOWN, key_press_callback);
-			add_listener(SDL_KEYUP, key_press_callback);
-		}
 	private:
 		event_map registered_events;
 		void trigger_event(const SDL_Event& event) const;

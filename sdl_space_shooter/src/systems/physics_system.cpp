@@ -16,10 +16,8 @@ namespace ecs
         for (const auto& entity : get_managed_entities())
         {
             auto [position, velocity] = world.get_components<components::position, components::velocity>(entity);
-            position.x += velocity.x * dt;
-            position.y += velocity.y * dt;
-
-            printf("x: %f y: %f\n", position.x, position.y);
+            position.x += velocity.x * 100.f * dt;
+            position.y += velocity.y * 100.f * dt;
         }
     }
 }
