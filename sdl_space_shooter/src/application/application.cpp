@@ -50,6 +50,8 @@ namespace application
 		const auto bomb_rect = new SDL_Rect{ 32, 32, 64, 64 };
 
 		auto world = ecs::world<ecs::ComponentCount, ecs::SystemCount>();
+		world.reserve(ecs::EntityCount);
+
 		world.register_component<components::position>();
 		world.register_component<components::velocity>();
 

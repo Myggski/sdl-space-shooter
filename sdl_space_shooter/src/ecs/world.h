@@ -7,6 +7,7 @@
 
 namespace ecs
 {
+    constexpr auto EntityCount = 1024;
     constexpr auto ComponentCount = 32;
     constexpr auto SystemCount = 8;
 

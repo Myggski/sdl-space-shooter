@@ -15,7 +15,7 @@ namespace ecs
         void reserve(std::size_t size)
         {
             free_entities.resize(size);
-            std::iota(std::begin(free_entities), std::end(free_entities), 0);
+            std::fill(free_entities.begin(), free_entities.end(), static_cast<ecs::entity>(0));
             entity_to_bitset.resize(size);
 
             for (auto& entity_to_component : entity_to_components)
@@ -84,7 +84,7 @@ namespace ecs
         std::vector<std::bitset<component_count>> entity_to_bitset{};
         std::array<std::vector<entity_id>, component_count> entity_to_components;
         std::array<std::vector<entity_id>, system_count> entity_to_managed_entities;
-        std::vector<entity> free_entities{};
+        std::vector<ecs::entity> free_entities{};
     };
 
 }
