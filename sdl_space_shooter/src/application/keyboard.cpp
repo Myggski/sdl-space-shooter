@@ -25,7 +25,7 @@ namespace application
 
 	bool keyboard::is_key_pressed(const SDL_Scancode scancode) const
 	{
-        return keys.count(scancode);
+        return keys.contains(scancode);
 	}
 
     bool keyboard::is_key_released(const SDL_Scancode scancode) const
@@ -35,7 +35,7 @@ namespace application
 
     bool keyboard::is_key_held(const SDL_Scancode scancode) const
     {
-        return keys.count(scancode) && keys.at(scancode).is_held();
+        return keys.contains(scancode);
     }
 
 }

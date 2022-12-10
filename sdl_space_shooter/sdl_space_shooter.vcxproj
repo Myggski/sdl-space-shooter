@@ -176,10 +176,10 @@
       <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
     </ClCompile>
     <ClCompile Include="src\application\events.cpp" />
-    <ClCompile Include="src\components\input.cpp" />
-    <ClCompile Include="src\components\position.cpp" />
-    <ClCompile Include="src\components\texture.cpp" />
-    <ClCompile Include="src\components\velocity.cpp" />
+    <ClCompile Include="src\ecs\components\input.cpp" />
+    <ClCompile Include="src\ecs\components\position.cpp" />
+    <ClCompile Include="src\ecs\components\texture.cpp" />
+    <ClCompile Include="src\ecs\components\velocity.cpp" />
     <ClCompile Include="src\application\texture_manager.cpp" />
     <ClCompile Include="src\application\keyboard.cpp" />
     <ClCompile Include="src\main.cpp">
@@ -194,9 +194,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="src\systems\draw_system.cpp" />
-    <ClCompile Include="src\systems\input_system.cpp" />
-    <ClCompile Include="src\systems\physics_system.cpp" />
+    <ClCompile Include="src\ecs\systems\draw_system.cpp" />
+    <ClCompile Include="src\ecs\systems\input_system.cpp" />
+    <ClCompile Include="src\ecs\systems\physics_system.cpp" />
     <ClCompile Include="src\window_data.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -204,22 +204,22 @@
     <ClInclude Include="src\application\application_props.h" />
     <ClInclude Include="src\application\keyboard.h" />
     <ClInclude Include="src\application\timer.h" />
-    <ClInclude Include="src\components\components.h" />
-    <ClInclude Include="src\components\input.h" />
-    <ClInclude Include="src\components\position.h" />
-    <ClInclude Include="src\components\texture.h" />
-    <ClInclude Include="src\components\velocity.h" />
-    <ClInclude Include="src\ecs\base_component_repository.h" />
-    <ClInclude Include="src\ecs\component_repository.h" />
-    <ClInclude Include="src\ecs\entity_repository.h" />
+    <ClInclude Include="src\ecs\components\input.h" />
+    <ClInclude Include="src\ecs\components\position.h" />
+    <ClInclude Include="src\ecs\components\texture.h" />
+    <ClInclude Include="src\ecs\components\velocity.h" />
+    <ClInclude Include="src\ecs\components\base_component_array.h" />
+    <ClInclude Include="src\ecs\components\component_array.h" />
+    <ClInclude Include="src\ecs\entities\entity_repository.h" />
     <ClInclude Include="src\ecs\component.h" />
     <ClInclude Include="src\ecs\entity.h" />
     <ClInclude Include="src\application\events.h" />
     <ClInclude Include="src\ecs\system.h" />
     <ClInclude Include="src\ecs\world.h" />
-    <ClInclude Include="src\systems\draw_system.h" />
-    <ClInclude Include="src\systems\input_system.h" />
-    <ClInclude Include="src\systems\physics_system.h" />
+    <ClInclude Include="src\helpers\math.h" />
+    <ClInclude Include="src\ecs\systems\draw_system.h" />
+    <ClInclude Include="src\ecs\systems\input_system.h" />
+    <ClInclude Include="src\ecs\systems\physics_system.h" />
     <ClInclude Include="src\application\texture_manager.h" />
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\window_data.h" />

@@ -39,28 +39,28 @@
     <ClCompile Include="src\application\events.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\systems\physics_system.cpp">
+    <ClCompile Include="src\ecs\systems\physics_system.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\components\position.cpp">
+    <ClCompile Include="src\ecs\components\position.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\components\velocity.cpp">
+    <ClCompile Include="src\ecs\components\velocity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\application\keyboard.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\components\input.cpp">
+    <ClCompile Include="src\ecs\components\input.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\systems\input_system.cpp">
+    <ClCompile Include="src\ecs\systems\input_system.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\components\texture.cpp">
+    <ClCompile Include="src\ecs\components\texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\systems\draw_system.cpp">
+    <ClCompile Include="src\ecs\systems\draw_system.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -92,46 +92,46 @@
     <ClInclude Include="src\ecs\system.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\systems\physics_system.h">
+    <ClInclude Include="src\ecs\systems\physics_system.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\ecs\component.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\components\position.h">
+    <ClInclude Include="src\ecs\components\position.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\components\components.h">
+    <ClInclude Include="src\ecs\entities\entity_repository.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\ecs\entity_repository.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ecs\component_repository.h">
+    <ClInclude Include="src\ecs\components\component_array.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\ecs\world.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\components\velocity.h">
+    <ClInclude Include="src\ecs\components\velocity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\ecs\base_component_repository.h">
+    <ClInclude Include="src\ecs\components\base_component_array.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\application\keyboard.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\components\input.h">
+    <ClInclude Include="src\ecs\components\input.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\systems\input_system.h">
+    <ClInclude Include="src\ecs\systems\input_system.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\components\texture.h">
+    <ClInclude Include="src\ecs\components\texture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\systems\draw_system.h">
+    <ClInclude Include="src\ecs\systems\draw_system.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\helpers\math.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

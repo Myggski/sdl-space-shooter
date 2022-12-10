@@ -8,11 +8,7 @@ namespace application
     struct keyboard_key_data
     {
     public:
-	    bool is_held() const
-        {
-            return number_of_repeats > 0;
-        }
-
+	    bool is_held() const { return number_of_repeats > 0; }
         keyboard_key_data() = default;
 	    keyboard_key_data(SDL_Scancode scancode);
         size_t number_of_repeats{ 0 };

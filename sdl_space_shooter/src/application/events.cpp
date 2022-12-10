@@ -3,7 +3,6 @@
 
 namespace application
 {
-
 	events::events() : registered_events(event_map()) { }
 
 	void events::pull() const
