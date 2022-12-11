@@ -133,7 +133,6 @@ namespace ecs
             {
                 on_valid_entity_removed(entity);
 
-                valid_entities[entity_to_valid_entity.at(entity)] = valid_entities.back();
                 entity_to_valid_entity.erase(entity);
                 valid_entities.pop_back();
             }

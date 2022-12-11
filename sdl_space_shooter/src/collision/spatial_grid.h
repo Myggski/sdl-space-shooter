@@ -15,7 +15,7 @@ namespace ecs
 
 namespace collision
 {
-	static constexpr int CELL_SIZE = 64;
+	static constexpr int CELL_SIZE = 128;
 
 	template<std::size_t component_count, std::size_t system_count>
 	class spatial_grid final
@@ -24,7 +24,7 @@ namespace collision
 	public:
 		spatial_grid()
 		{
-			entities.reserve((1280 / 64) * (720 / 64));
+			entities.reserve((1280 / CELL_SIZE) * (720 / CELL_SIZE));
 		}
 
 		std::vector<ecs::entity> find_nearby(const SDL_FRect& entity_data, std::set<ecs::entity> exclude)

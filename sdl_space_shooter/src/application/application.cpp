@@ -1,6 +1,9 @@
 #include "pch.h"
 
 #include "application.h"
+
+#include <random>
+
 #include "texture_manager.h"
 #include "ecs/components/input.h"
 #include "ecs/components/position.h"
@@ -47,8 +50,11 @@ namespace application
 		events.add_listener(SDL_KEYUP, &on_key_released);
 	}
 
-	float randd() {
-		return static_cast<float>(rand()) / (RAND_MAX + 1.0);
+	float rand_float(float min, float max) {
+		std::random_device rd;
+		std::mt19937 gen(rd());
+		const std::uniform_real_distribution dis(min, max);
+		return dis(gen);
 	}
 
 	void application::run_game()
@@ -59,7 +65,7 @@ namespace application
 		SDL_SetRenderDrawColor(renderer, 23, 23, 23, 255);
 
 		auto world = ecs::world<ecs::MAX_COMPONENTS, ecs::MAX_SYSTEMS>();
-		world.reserve(10240);
+		world.reserve(50240);
 		world.register_component<ecs::components::input>();
 		world.register_component<ecs::components::position>();
 		world.register_component<ecs::components::velocity>();
@@ -87,11 +93,14 @@ namespace application
 			SDL_SCANCODE_D
 		));
 
-		const auto entity2 = world.create_entity();
-		world.add_component<ecs::components::position>(entity2, ecs::components::position(128, 128)); // start position
-		world.add_component<ecs::components::box_collider>(entity2, ecs::components::box_collider(64.f, 64.f)); // start velocity
-		world.add_component<ecs::components::health>(entity2, ecs::components::health(1)); // start velocity
-		world.add_component<ecs::components::texture>(entity2, ecs::components::texture(texture_manager.get_image("resources/icon.png", renderer), 64.f, 64.f)); // start velocity
+		for (int i = 0; i < 50000; i++)
+		{
+			const auto entity2 = world.create_entity();
+			world.add_component<ecs::components::position>(entity2, ecs::components::position(640 - rand_float(-640, 640), 360 - rand_float(-360, 360))); // start position
+			world.add_component<ecs::components::box_collider>(entity2, ecs::components::box_collider(64.f, 64.f)); // start velocity
+			world.add_component<ecs::components::health>(entity2, ecs::components::health(1)); // start velocity
+			world.add_component<ecs::components::texture>(entity2, ecs::components::texture(texture_manager.get_image("resources/icon.png", renderer), 64.f, 64.f)); // start velocity	
+		}
 
 		//world.remove_entity(entity);
 
@@ -105,6 +114,8 @@ namespace application
 			world.update(time.delta_time);
 
 			SDL_RenderPresent(renderer);
+
+			printf("%f\n", 1.f / time.delta_time);
 		}
 
 		SDL_DestroyRenderer(renderer);
