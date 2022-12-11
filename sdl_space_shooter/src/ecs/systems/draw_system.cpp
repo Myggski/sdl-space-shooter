@@ -13,9 +13,10 @@ namespace ecs
         draw_system::draw_system(ecs::world<MAX_COMPONENTS, MAX_SYSTEMS>& world, SDL_Renderer* renderer)
             : system(world), renderer(renderer)
         {
-            set_requirements<components::position, components::texture>();
+            set_all_requirements<components::position, components::texture>();
+            set_update([&](const float dt) { draw(dt); });
         }
-        void draw_system::update(const float dt) const
+        void draw_system::draw(const float dt) const
         {
             for (const auto& entity : get_entities())
             {

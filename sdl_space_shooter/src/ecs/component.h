@@ -10,7 +10,10 @@ namespace ecs
         position,
         size,
         velocity,
-        texture
+        texture,
+        box_collider,
+        damage,
+        health,
     };
     template<typename T, auto Type>
     class component

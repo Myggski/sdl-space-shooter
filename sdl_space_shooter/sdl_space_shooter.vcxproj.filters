@@ -63,6 +63,21 @@
     <ClCompile Include="src\ecs\systems\draw_system.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\ecs\components\box_collider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ecs\systems\damage_collision.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ecs\components\damage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ecs\components\health.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ecs\systems\collision.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ecs\entity.h">
@@ -131,12 +146,48 @@
     <ClInclude Include="src\ecs\systems\draw_system.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\helpers\math.h">
+    <ClInclude Include="src\application\math.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\collision\spatial_grid.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\collision\aabb.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ecs\components\box_collider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ecs\systems\damage_collision.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ecs\components\damage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ecs\components\health.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ecs\systems\collision.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="resources\icon.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\meteor1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\meteor2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\meteor3.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\meteor4.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\player.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

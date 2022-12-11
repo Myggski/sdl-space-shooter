@@ -11,7 +11,7 @@ namespace ecs
         {
         public:
             physics_system(ecs::world<MAX_COMPONENTS, MAX_SYSTEMS>& world);
-            void update(const float dt) const override;
+            void try_move(const float dt) const;
         };
     }
 }

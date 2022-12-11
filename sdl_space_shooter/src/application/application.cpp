@@ -6,8 +6,13 @@
 #include "ecs/components/position.h"
 #include "ecs/components/texture.h"
 #include "ecs/components/velocity.h"
+#include "ecs/components/box_collider.h"
+#include "ecs/components/damage.h"
+#include "ecs/components/health.h"
 #include "ecs/entity.h"
 #include "ecs/world.h"
+#include "ecs/systems/collision.h"
+#include "ecs/systems/damage_collision.h"
 #include "ecs/systems/draw_system.h"
 #include "ecs/systems/input_system.h"
 #include "ecs/systems/physics_system.h"
@@ -54,19 +59,26 @@ namespace application
 		SDL_SetRenderDrawColor(renderer, 23, 23, 23, 255);
 
 		auto world = ecs::world<ecs::MAX_COMPONENTS, ecs::MAX_SYSTEMS>();
-		world.reserve(1024 * 10);
+		world.reserve(10240);
 		world.register_component<ecs::components::input>();
 		world.register_component<ecs::components::position>();
 		world.register_component<ecs::components::velocity>();
 		world.register_component<ecs::components::texture>();
+		world.register_component<ecs::components::box_collider>();
+		world.register_component<ecs::components::damage>();
+		world.register_component<ecs::components::health>();
 
 		world.create_system<ecs::systems::input_system>(world, keyboard_input);
 		world.create_system<ecs::systems::physics_system>(world);
+		world.create_system<ecs::systems::collision>(world);
+		world.create_system<ecs::systems::damage_collision>(world);
 		world.create_system<ecs::systems::draw_system>(world, renderer);
 
 		const auto entity = world.create_entity();
 		world.add_component<ecs::components::position>(entity, ecs::components::position(0, 0)); // start position
 		world.add_component<ecs::components::velocity>(entity, ecs::components::velocity(0, 0)); // start velocity
+		world.add_component<ecs::components::damage>(entity, ecs::components::damage(1)); // start velocity
+		world.add_component<ecs::components::box_collider>(entity, ecs::components::box_collider(64.f, 64.f)); // start velocity
 		world.add_component<ecs::components::texture>(entity, ecs::components::texture(texture_manager.get_image("resources/player.png", renderer), 64.f, 64.f)); // start velocity
 		world.add_component<ecs::components::input>(entity, ecs::components::input(
 			SDL_SCANCODE_W,
@@ -74,6 +86,14 @@ namespace application
 			SDL_SCANCODE_A,
 			SDL_SCANCODE_D
 		));
+
+		const auto entity2 = world.create_entity();
+		world.add_component<ecs::components::position>(entity2, ecs::components::position(128, 128)); // start position
+		world.add_component<ecs::components::box_collider>(entity2, ecs::components::box_collider(64.f, 64.f)); // start velocity
+		world.add_component<ecs::components::health>(entity2, ecs::components::health(1)); // start velocity
+		world.add_component<ecs::components::texture>(entity2, ecs::components::texture(texture_manager.get_image("resources/icon.png", renderer), 64.f, 64.f)); // start velocity
+
+		//world.remove_entity(entity);
 
 		time.init();
 		while (is_running) {

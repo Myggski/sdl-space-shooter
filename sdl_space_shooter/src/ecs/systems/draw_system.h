@@ -12,7 +12,7 @@ namespace ecs
         {
         public:
             draw_system(ecs::world<MAX_COMPONENTS, MAX_SYSTEMS>& world, SDL_Renderer* renderer);
-            void update(const float dt) const override;
+            void draw(const float dt) const;
         private:
             SDL_Renderer* renderer;
         };

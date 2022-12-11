@@ -12,7 +12,7 @@ namespace ecs
         {
         public:
             input_system(ecs::world<MAX_COMPONENTS, MAX_SYSTEMS>& world, application::keyboard& keyboard);
-            void update(const float dt) const override;
+            void check_input(const float dt) const;
         private:
             application::keyboard& keyboard;
         };

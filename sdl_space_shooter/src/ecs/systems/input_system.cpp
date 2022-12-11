@@ -4,7 +4,7 @@
 #include "ecs/components/input.h"
 #include "ecs/components/velocity.h"
 #include "ecs/world.h"
-#include "helpers/math.h"
+#include "application/math.h"
 
 namespace ecs
 {
@@ -13,9 +13,10 @@ namespace ecs
         input_system::input_system(ecs::world<MAX_COMPONENTS, MAX_SYSTEMS>& world, application::keyboard& keyboard)
             : system(world), keyboard(keyboard)
         {
-            set_requirements<components::input, components::velocity>();
+            set_all_requirements<components::input, components::velocity>();
+            set_update([&](const float dt) { check_input(dt); });
         }
-        void input_system::update(const float dt) const
+        void input_system::check_input(const float dt) const
         {
 
             for (const auto& entity : get_entities())

@@ -6,27 +6,40 @@
 
 namespace ecs
 {
+    using update_func = std::function<void(const float dt)>;
+
     template<std::size_t component_count, std::size_t system_count>
     class world;
-
+    
     template<std::size_t component_count, std::size_t system_count>
     class system
     {
     public:
         system(world<component_count, system_count>& world) : world(world) {}
         virtual ~system() = default;
-        virtual void update(float dt) const = 0;
 
     protected:
         ecs::world<component_count, system_count>& world;
+
+        void set_update(update_func update_func)
+        {
+            update = update_func;
+        }
+
         /**
          * \brief Adds the component types as requirements for the system
          * \tparam Ts Is a list of components
          */
         template<typename ...Ts>
-        void set_requirements()
+        void set_all_requirements()
         {
-            (requirements.set(Ts::type), ...);
+            (all_requirements.set(Ts::type), ...);
+        }
+
+        template<typename ...Ts>
+        void set_any_requirements()
+        {
+            (any_requirements.set(Ts::type), ...);
         }
 
         /**
@@ -38,14 +51,17 @@ namespace ecs
             return valid_entities;
         }
 
-        virtual void on_entity_added([[maybe_unused]] entity entity) { }
+        virtual void on_valid_entity_added([[maybe_unused]] entity entity) { }
         virtual void on_valid_entity_removed([[maybe_unused]] entity entity) { }
     private:
         friend ecs::world<component_count, system_count>;
 
-        std::bitset<component_count> requirements;
+        update_func update;
+        std::bitset<component_count> all_requirements;
+        std::bitset<component_count> any_requirements;
         std::size_t system_id{};
         std::vector<entity> valid_entities;
+        std::unordered_map<entity, index> entity_to_valid_entity;
 
         /**
          * \brief Sets the id of the system
@@ -63,9 +79,20 @@ namespace ecs
          */
         void on_entity_updated(entity entity, const std::bitset<component_count>& components)
         {
-            auto satisfied = (requirements & components) == requirements;
-            const auto found_entity = std::ranges::find(valid_entities, entity);
-            auto managed = found_entity != valid_entities.end() && *found_entity != invalid_entity_id;
+            bool satisfied = true;
+            const bool managed = entity_to_valid_entity.contains(entity);
+
+            if (any_requirements.any())
+            {
+                satisfied = (any_requirements & components) != 0;
+            }
+
+            if (all_requirements.any() && satisfied)
+            {
+	            satisfied = (all_requirements & components) == all_requirements;
+            }
+            
+
             if (satisfied && !managed)
             {
                 add_entity(entity);
@@ -91,8 +118,9 @@ namespace ecs
          */
         void add_entity(entity entity)
         {
+            entity_to_valid_entity[entity] = valid_entities.size();
             valid_entities.emplace_back(entity);
-            on_entity_added(entity);
+            on_valid_entity_added(entity);
         }
 
         /**
@@ -101,13 +129,12 @@ namespace ecs
          */
         void remove_entity(entity entity)
         {
-            const auto found_entity = std::ranges::find(valid_entities, entity);
-
-            if (found_entity != valid_entities.end())
+            if (entity_to_valid_entity.contains(entity))
             {
                 on_valid_entity_removed(entity);
 
-                valid_entities[found_entity - valid_entities.begin()] = valid_entities.back();
+                valid_entities[entity_to_valid_entity.at(entity)] = valid_entities.back();
+                entity_to_valid_entity.erase(entity);
                 valid_entities.pop_back();
             }
         }
