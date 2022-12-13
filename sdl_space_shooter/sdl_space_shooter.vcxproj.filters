@@ -78,6 +78,15 @@
     <ClCompile Include="src\ecs\systems\collision.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\ecs\components\rotation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ecs\systems\enemy_spawner.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\application\interval.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ecs\entity.h">
@@ -110,7 +119,7 @@
     <ClInclude Include="src\ecs\systems\physics_system.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\ecs\component.h">
+    <ClInclude Include="src\ecs\components\component.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\ecs\components\position.h">
@@ -119,7 +128,7 @@
     <ClInclude Include="src\ecs\entities\entity_repository.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\ecs\components\component_array.h">
+    <ClInclude Include="src\ecs\component_array.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\ecs\world.h">
@@ -128,7 +137,7 @@
     <ClInclude Include="src\ecs\components\velocity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\ecs\components\base_component_array.h">
+    <ClInclude Include="src\ecs\base_component_array.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\application\keyboard.h">
@@ -170,9 +179,27 @@
     <ClInclude Include="src\ecs\systems\collision.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\ecs\components\rotation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ecs\entities\player.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ecs\entities\enemy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ecs\systems\enemy_spawner.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\application\interval.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="resources\icon.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\meteor0.png">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="resources\meteor1.png">
@@ -184,10 +211,10 @@
     <Image Include="resources\meteor3.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="resources\meteor4.png">
+    <Image Include="resources\player.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="resources\player.png">
+    <Image Include="resources\background.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

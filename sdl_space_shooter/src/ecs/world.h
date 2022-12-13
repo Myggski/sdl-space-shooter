@@ -1,8 +1,8 @@
 #pragma once
 
 #include "collision/spatial_grid.h"
-#include "ecs/components/base_component_array.h"
-#include "ecs/components/component_array.h"
+#include "ecs/base_component_array.h"
+#include "ecs/component_array.h"
 #include "ecs/entities/entity_repository.h"
 #include "ecs/system.h"
 
@@ -24,7 +24,7 @@ namespace ecs
         void register_component()
         {
             check_component_type<T>();
-            components[T::type] = std::make_unique<components::component_array<T, component_count>>(
+            components[T::type] = std::make_unique<component_array<T, component_count>>(
                 entity_repository.get_entity_to_component(T::type), entity_repository.get_entities());
         }
 
@@ -51,7 +51,7 @@ namespace ecs
 
 	    /**
 	     * \brief Reserves size for all the components and entities
-	     * \param entity_size How many entities that the world should contain
+	     * \param number_of_entities How many entities that the world should contain
 	     */
 	    void reserve(std::size_t number_of_entities)
         {
@@ -99,6 +99,12 @@ namespace ecs
             entity_repository.remove(entity);
         }
 
+	    /**
+	     * \brief Checks if entity has component
+	     * \tparam T Component type
+	     * \param entity The entity that is being checked
+	     * \return 
+	     */
 	    template<typename T>
         bool has_component(entity entity) const
         {
@@ -106,7 +112,13 @@ namespace ecs
             return entity_repository.get_entity(entity)[T::type];
         }
 
-        template<typename ...Ts>
+	    /**
+	     * \brief Checks if entity has components
+	     * \tparam Ts Component types
+	     * \param entity The entity that is being checked
+	     * \return 
+	     */
+	    template<typename ...Ts>
         bool has_components(entity entity) const
         {
             check_component_types<Ts...>();
@@ -118,6 +130,16 @@ namespace ecs
             // Getting entity's components and comparing to see if the entity has the same components
             const auto entity_components = entity_repository.get_entity(entity);
             return (requirements & entity_components) == requirements;
+        }
+
+        template<typename ...Ts>
+        bool has_components(entity entity, std::bitset<component_count> requirements) const
+        {
+            check_component_types<Ts...>();
+
+            // Getting entity's components and comparing to see if the entity has the same components
+            const auto entity_components = entity_repository.get_entity(entity);
+            return (requirements & entity_components) != 0;
         }
 
         template<typename T>
@@ -174,14 +196,17 @@ namespace ecs
             }
         }
 
-        void update(float dt)
-	    {
+        void update(float dt) const
+        {
 		    for (auto& system_update : systems_updates)
 		    {
                 system_update(dt);
 		    }
 	    }
 
+        /*
+         * SPATIAL GRID
+         */
         void update_grid(ecs::entity entity, const SDL_FRect& old_rect_data, const SDL_FRect& new_rect_data)
 	    {
             spatial_grid.update(entity, old_rect_data, new_rect_data);
@@ -197,17 +222,21 @@ namespace ecs
             spatial_grid.remove(entity, rect_data);
         }
 
-        std::vector<entity> find_nearby_grid(const SDL_FRect& rect_data, std::set<entity> exclude = {})
-	    {
-            return spatial_grid.find_nearby(rect_data, exclude);
-	    }
+template<typename... Ts>
+std::set<entity> find_nearby_grid(const SDL_FRect& rect_data, const std::set<entity>& excluded_entities = {})
+{
+    std::bitset<component_count> excluded_all_components;
+    (excluded_all_components.set(Ts::type), ...);
+
+    return std::move(spatial_grid.find_nearby(rect_data, excluded_all_components, excluded_entities));
+}
         
     private:
-        std::array<std::unique_ptr<components::base_component_array>, component_count> components{};
+        std::array<std::unique_ptr<base_component_array>, component_count> components{};
         entities::entity_repository<component_count> entity_repository{};
         std::vector<std::unique_ptr<system<component_count, system_count>>> systems{};
         std::vector<update_func> systems_updates{};
-		collision::spatial_grid<component_count, system_count> spatial_grid{};
+		collision::spatial_grid<component_count, system_count> spatial_grid{ *this };
 
         template<typename T>
         void check_component_type() const
@@ -224,12 +253,12 @@ namespace ecs
         template<typename T>
         auto get_component_array()
         {
-            return static_cast<components::component_array<T, component_count>*>(components[T::type].get());
+            return static_cast<component_array<T, component_count>*>(components[T::type].get());
         }
         template<typename T>
         auto get_component_array() const
         {
-            return static_cast<const components::component_array<T, component_count>*>(components[T::type].get());
+            return static_cast<const component_array<T, component_count>*>(components[T::type].get());
         }
     };
 }

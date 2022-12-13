@@ -10,7 +10,7 @@ namespace ecs
 
     template<std::size_t component_count, std::size_t system_count>
     class world;
-    
+
     template<std::size_t component_count, std::size_t system_count>
     class system
     {
@@ -89,9 +89,9 @@ namespace ecs
 
             if (all_requirements.any() && satisfied)
             {
-	            satisfied = (all_requirements & components) == all_requirements;
+                satisfied = (all_requirements & components) == all_requirements;
             }
-            
+
 
             if (satisfied && !managed)
             {
@@ -129,13 +129,24 @@ namespace ecs
          */
         void remove_entity(entity entity)
         {
-            if (entity_to_valid_entity.contains(entity))
+            if (!entity_to_valid_entity.contains(entity))
             {
-                on_valid_entity_removed(entity);
-
-                entity_to_valid_entity.erase(entity);
-                valid_entities.pop_back();
+                return;
             }
+
+            on_valid_entity_removed(entity);
+
+            const auto index = entity_to_valid_entity[entity];
+            if (index == invalid_entity_id)
+            {
+                return;
+            }
+
+            
+            entity_to_valid_entity[valid_entities.back()] = index;
+            entity_to_valid_entity[entity] = invalid_entity_id;
+            valid_entities[index] = valid_entities.back();
+            valid_entities.pop_back();
         }
     };
 }

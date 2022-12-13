@@ -1,7 +1,7 @@
 #pragma once
 
 #include <SDL_scancode.h>
-#include "ecs/component.h"
+#include "component.h"
 
 namespace ecs
 {

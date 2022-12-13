@@ -12,9 +12,13 @@ namespace ecs
         {
         public:
             draw_system(ecs::world<MAX_COMPONENTS, MAX_SYSTEMS>& world, SDL_Renderer* renderer);
-            void draw(const float dt) const;
+            void draw(const float dt);
+            void on_valid_entity_added(entity entity) override;
+            void on_valid_entity_removed(entity entity) override;
         private:
+            std::vector<entity> draw_entities;
             SDL_Renderer* renderer;
+            bool is_dirty;
         };
     }
 }

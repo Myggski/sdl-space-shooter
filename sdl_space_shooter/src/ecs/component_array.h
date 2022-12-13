@@ -2,12 +2,10 @@
 
 #include "ecs/entity.h"
 #include <bitset>
-#include "ecs/components/base_component_array.h"
+#include "ecs/base_component_array.h"
 
 namespace ecs
 {
-    namespace components
-    {
         template<typename T, size_t component_count>
         class component_array final : public base_component_array
         {
@@ -24,7 +22,8 @@ namespace ecs
 
             T& get(entity entity)
             {
-                return component_values[entity_to_component_index[entity]];
+                auto index = entity_to_component_index[entity];
+                return component_values[index];
             }
             const T& get(entity entity) const
             {
@@ -73,6 +72,4 @@ namespace ecs
             std::vector<index>& entity_to_component_index;
             std::vector<std::bitset<component_count>>& entity_components;
         };
-    }
 }
-

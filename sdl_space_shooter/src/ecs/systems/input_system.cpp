@@ -18,7 +18,6 @@ namespace ecs
         }
         void input_system::check_input(const float dt) const
         {
-
             for (const auto& entity : get_entities())
             {
                 float new_velocity_x = 0;

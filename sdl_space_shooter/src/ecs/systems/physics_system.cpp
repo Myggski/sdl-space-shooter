@@ -6,6 +6,7 @@
 #include "ecs/components/velocity.h"
 #include "ecs/world.h"
 #include "collision/aabb.h"
+#include "ecs/components/input.h"
 
 namespace ecs
 {
@@ -16,6 +17,7 @@ namespace ecs
             set_all_requirements<components::position, components::velocity>();
             set_update([&](const float dt) { try_move(dt); });
         }
+
         void physics_system::try_move(const float dt) const
         {
             for (const auto& entity : get_entities())

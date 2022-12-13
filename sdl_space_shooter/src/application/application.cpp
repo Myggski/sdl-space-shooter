@@ -1,9 +1,6 @@
 #include "pch.h"
 
 #include "application.h"
-
-#include <random>
-
 #include "texture_manager.h"
 #include "ecs/components/input.h"
 #include "ecs/components/position.h"
@@ -14,9 +11,13 @@
 #include "ecs/components/health.h"
 #include "ecs/entity.h"
 #include "ecs/world.h"
+#include "ecs/components/rotation.h"
+#include "ecs/entities/enemy.h"
+#include "ecs/entities/player.h"
 #include "ecs/systems/collision.h"
 #include "ecs/systems/damage_collision.h"
 #include "ecs/systems/draw_system.h"
+#include "ecs/systems/enemy_spawner.h"
 #include "ecs/systems/input_system.h"
 #include "ecs/systems/physics_system.h"
 
@@ -50,19 +51,14 @@ namespace application
 		events.add_listener(SDL_KEYUP, &on_key_released);
 	}
 
-	float rand_float(float min, float max) {
-		std::random_device rd;
-		std::mt19937 gen(rd());
-		const std::uniform_real_distribution dis(min, max);
-		return dis(gen);
-	}
-
 	void application::run_game()
 	{
 		is_running = true;
-
+		time.init();
 		SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 		SDL_SetRenderDrawColor(renderer, 23, 23, 23, 255);
+
+		texture_manager.init(renderer);
 
 		auto world = ecs::world<ecs::MAX_COMPONENTS, ecs::MAX_SYSTEMS>();
 		world.reserve(50240);
@@ -73,49 +69,35 @@ namespace application
 		world.register_component<ecs::components::box_collider>();
 		world.register_component<ecs::components::damage>();
 		world.register_component<ecs::components::health>();
+		world.register_component<ecs::components::rotation>();
 
 		world.create_system<ecs::systems::input_system>(world, keyboard_input);
 		world.create_system<ecs::systems::physics_system>(world);
+		world.create_system<ecs::systems::enemy_spawner>(world, texture_manager);
 		world.create_system<ecs::systems::collision>(world);
 		world.create_system<ecs::systems::damage_collision>(world);
 		world.create_system<ecs::systems::draw_system>(world, renderer);
 
-		const auto entity = world.create_entity();
-		world.add_component<ecs::components::position>(entity, ecs::components::position(0, 0)); // start position
-		world.add_component<ecs::components::velocity>(entity, ecs::components::velocity(0, 0)); // start velocity
-		world.add_component<ecs::components::damage>(entity, ecs::components::damage(1)); // start velocity
-		world.add_component<ecs::components::box_collider>(entity, ecs::components::box_collider(64.f, 64.f)); // start velocity
-		world.add_component<ecs::components::texture>(entity, ecs::components::texture(texture_manager.get_image("resources/player.png", renderer), 64.f, 64.f)); // start velocity
-		world.add_component<ecs::components::input>(entity, ecs::components::input(
-			SDL_SCANCODE_W,
-			SDL_SCANCODE_S,
-			SDL_SCANCODE_A,
-			SDL_SCANCODE_D
-		));
+		// Background
+		const auto background = world.create_entity();
+		world.add_component<ecs::components::position>(background, ecs::components::position(0, 0));
+		world.add_component<ecs::components::texture>(background, ecs::components::texture(texture_manager.get_image("resources/background.png"), 1280.f, 720.f));
 
-		for (int i = 0; i < 50000; i++)
-		{
-			const auto entity2 = world.create_entity();
-			world.add_component<ecs::components::position>(entity2, ecs::components::position(640 - rand_float(-640, 640), 360 - rand_float(-360, 360))); // start position
-			world.add_component<ecs::components::box_collider>(entity2, ecs::components::box_collider(64.f, 64.f)); // start velocity
-			world.add_component<ecs::components::health>(entity2, ecs::components::health(1)); // start velocity
-			world.add_component<ecs::components::texture>(entity2, ecs::components::texture(texture_manager.get_image("resources/icon.png", renderer), 64.f, 64.f)); // start velocity	
-		}
+		// Player
+		const auto player = ecs::entities::create_player(world, texture_manager, ecs::components::position(64.f, 360.f));
 
 		//world.remove_entity(entity);
 
-		time.init();
 		while (is_running) {
 			time.refresh_dt();
 			events.pull();
+			interval::get_instance().update();
 
 			SDL_RenderClear(renderer);
 
 			world.update(time.delta_time);
 
 			SDL_RenderPresent(renderer);
-
-			printf("%f\n", 1.f / time.delta_time);
 		}
 
 		SDL_DestroyRenderer(renderer);

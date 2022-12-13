@@ -10,9 +10,11 @@ namespace application
 	{
 	public:
 		~texture_manager();
-		SDL_Texture* get_image(const char* const file_path, SDL_Renderer* renderer);
-		static void draw_texture(SDL_Renderer* renderer, SDL_Texture* texture, const SDL_FRect* image_rect, double angle = 0.f);
+		void init(SDL_Renderer* renderer);
+		SDL_Texture* get_image(const char* const file_path);
+		static void draw_texture(SDL_Renderer* renderer, SDL_Texture* texture, const SDL_FRect* image_rect, double angle = 0);
 	private:
+		SDL_Renderer* renderer;
 		std::map<const char*, SDL_Texture*> textures;
 	};
 	
