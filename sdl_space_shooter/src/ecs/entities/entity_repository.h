@@ -20,7 +20,7 @@ namespace ecs
 	         */
 	        void reserve(size_t number_of_entities)
             {
-                killed_entities.resize(number_of_entities);
+                killed_entities.reserve(number_of_entities);
                 std::iota(std::begin(killed_entities), std::end(killed_entities), 0);
                 alive_entities.resize(number_of_entities);
 
@@ -39,11 +39,11 @@ namespace ecs
                 return alive_entities;
             }
 
-            /**
-             * \brief Getter that returns a specific entity
-             * \param entity Entity is a bitset of components that defines the entity type
-             * \return 
-             */
+            /// <summary>
+            /// Getter that returns a specific entity
+            /// </summary>
+            /// <param name="entity">Entity is a bitset of components that defines the entity type</param>
+            /// <returns></returns>
             const std::bitset<component_count>& get_entity(entity entity) const
             {
                 return alive_entities[entity];
@@ -55,9 +55,11 @@ namespace ecs
 
             entity create()
             {
+                auto entity = ecs::entity();
+
                 if (killed_entities.empty())
                 {
-                    const entity entity(alive_entities.size());
+                    entity = static_cast<ecs::entity>(alive_entities.size());
                     alive_entities.emplace_back();
 
                     for (auto& entity_to_component : entity_to_component_index)
@@ -67,8 +69,8 @@ namespace ecs
 
                     return entity;
                 }
-
-                const entity entity = killed_entities.back();
+                
+                entity = killed_entities.back();
                 killed_entities.pop_back();
                 alive_entities[entity].reset();
 

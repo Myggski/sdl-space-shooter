@@ -54,7 +54,7 @@
     <ClCompile Include="src\ecs\components\input.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ecs\systems\input_system.cpp">
+    <ClCompile Include="src\ecs\systems\player_input.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\ecs\components\texture.cpp">
@@ -85,6 +85,21 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\application\interval.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ecs\systems\player_movement.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ecs\systems\laser_spawner.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ecs\components\layer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ecs\systems\time_removal.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ecs\components\removal_timer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -146,7 +161,7 @@
     <ClInclude Include="src\ecs\components\input.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\ecs\systems\input_system.h">
+    <ClInclude Include="src\ecs\systems\player_input.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\ecs\components\texture.h">
@@ -194,11 +209,35 @@
     <ClInclude Include="src\application\interval.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\application\random.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ecs\entities\laser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ecs\systems\player_movement.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ecs\systems\laser_spawner.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ecs\layers_types.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ecs\components\layer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ecs\systems\time_removal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ecs\setup_data.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ecs\components\removal_timer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="resources\icon.png">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="resources\meteor0.png">
       <Filter>Resource Files</Filter>
     </Image>
@@ -215,6 +254,12 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="resources\background.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="C:\Users\Tomas\Downloads\spaceshooter\PNG\Lasers\laserRed16.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\laser.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

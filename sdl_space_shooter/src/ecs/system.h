@@ -2,6 +2,7 @@
 
 #include <bitset>
 #include <vector>
+
 #include "ecs/entity.h"
 
 namespace ecs
@@ -67,9 +68,11 @@ namespace ecs
          * \brief Sets the id of the system
          * \param system_id is the index of the system
          */
-        void setup(std::size_t system_id)
+        void setup(std::size_t system_id, std::size_t number_of_entities)
         {
             this->system_id = system_id;
+            valid_entities.reserve(number_of_entities);
+            entity_to_valid_entity.reserve(number_of_entities);
         }
 
         /**
@@ -80,7 +83,7 @@ namespace ecs
         void on_entity_updated(entity entity, const std::bitset<component_count>& components)
         {
             bool satisfied = true;
-            const bool managed = entity_to_valid_entity.contains(entity);
+            const bool managed = entity_to_valid_entity.contains(entity) && entity_to_valid_entity[entity] != invalid_entity_id;
 
             if (any_requirements.any())
             {
@@ -118,7 +121,7 @@ namespace ecs
          */
         void add_entity(entity entity)
         {
-            entity_to_valid_entity[entity] = valid_entities.size();
+            entity_to_valid_entity[entity] = static_cast<ecs::entity>(valid_entities.size());
             valid_entities.emplace_back(entity);
             on_valid_entity_added(entity);
         }
@@ -134,6 +137,7 @@ namespace ecs
                 return;
             }
 
+            const auto derp = entity_to_valid_entity[entity];
             on_valid_entity_removed(entity);
 
             const auto index = entity_to_valid_entity[entity];

@@ -29,7 +29,7 @@ namespace ecs
 
         void collision::on_valid_entity_removed(entity entity)
         {
-            world.remove_from_grid(entity, get_rect_data(entity));
+            world.remove_from_grid(entity);
         }
     }
 }

@@ -3,9 +3,8 @@
 #include <string>
 #include <unordered_map>
 #include <iterator>
-#include <set>
-#include "SDL.h"
 #include "ecs/entity.h"
+#include "ecs/setup_data.h"
 
 namespace ecs
 {
@@ -15,6 +14,14 @@ namespace ecs
 
 namespace collision
 {
+	struct spatial_data
+	{
+		int min_x;
+		int max_x;
+		int min_y;
+		int max_y;
+	};
+
 	static constexpr int CELL_SIZE = 128;
 
 	template<std::size_t component_count, std::size_t system_count>
@@ -22,19 +29,28 @@ namespace collision
 	{
 		friend ::ecs::world<component_count, system_count>;
 	public:
-		spatial_grid(const ::ecs::world<component_count, system_count>& world) : world(world)
+		spatial_grid()
 		{
-			entities.reserve(10000);
+			entities.reserve(1280 / CELL_SIZE * 720 / CELL_SIZE);
+			entity_to_coordinates.reserve(ecs::MAX_ENTITIES);
+
+			for (int x = 0; x < 1280 / CELL_SIZE; x++)
+			{
+				for (int y = 0; y < 720 / CELL_SIZE; y++)
+				{
+					entities[get_key(x, y)].reserve(ecs::MAX_ENTITIES);
+				}
+			}
 		}
 
-		std::set<ecs::entity> find_nearby(const SDL_FRect& entity_data, const std::bitset<component_count>& excluded_components, const std::set<ecs::entity>& excluded_entities)
+		std::unordered_set<ecs::entity> find_nearby(const SDL_FRect& entity_data, std::function<bool(ecs::entity)> include_func)
 		{
 			const int min_x = static_cast<int>(std::floor((entity_data.x - (entity_data.w * 0.5f)) / CELL_SIZE));
 			const int max_x = static_cast<int>(std::ceil((entity_data.x + (entity_data.w * 0.5f)) / CELL_SIZE));
 			const int min_y = static_cast<int>(std::floor((entity_data.y - (entity_data.h * 0.5f)) / CELL_SIZE));
 			const int max_y = static_cast<int>(std::ceil((entity_data.y + (entity_data.h * 0.5f)) / CELL_SIZE));
 
-			std::set<ecs::entity> nearby_entities;
+			std::unordered_set<ecs::entity> nearby_entities;
 
 			for (int x = min_x; x <= max_x; ++x)
 			{
@@ -44,13 +60,7 @@ namespace collision
 
 					if (!entities[key].empty())
 					{
-						for (ecs::entity entity : entities[key])
-						{
-							if ((excluded_entities.empty() || !excluded_entities.contains(entity)) && (!excluded_components.any() || (excluded_components.any() && !world.has_components(entity, excluded_components))))
-							{
-								nearby_entities.insert(entity);
-							}
-						}
+						std::ranges::copy_if(entities[key], std::inserter(nearby_entities, nearby_entities.begin()), include_func);
 					}
 				}
 			}
@@ -58,51 +68,65 @@ namespace collision
 			return std::move(nearby_entities);
 		}
 	private:
-		std::unordered_map<std::string, std::set<ecs::entity>> entities;
-		const ecs::world<component_count, system_count>& world;
+		std::unordered_map<size_t, std::unordered_set<ecs::entity>> entities;
+		std::unordered_map<ecs::entity, spatial_data> entity_to_coordinates;
 
-		void update(const ecs::entity entity, const SDL_FRect& old_rect, const SDL_FRect& new_rect)
+		void update(const ecs::entity entity, const SDL_FRect& new_rect)
 		{
-			remove(entity, old_rect);
+			remove(entity);
 			insert(entity, new_rect);
 		}
 
-		bool remove(const ecs::entity entity, const SDL_FRect& entity_data)
+		void remove(const ecs::entity entity)
 		{
-			// Compute the coordinates of the cell that the entity belongs to
-			const int x = static_cast<int>(std::floor((entity_data.x + (entity_data.w * 0.5f)) / CELL_SIZE));
-			const int y = static_cast<int>(std::floor((entity_data.y + (entity_data.h * 0.5f)) / CELL_SIZE));
-			const auto key = get_key(x, y);
+			const auto& coordinates = entity_to_coordinates[entity];
 
-			if (!entities[key].empty())
+			for (int x = coordinates.min_x; x <= coordinates.max_x; ++x)
 			{
-				entities[key].erase(entity);
-
-				if (entities.contains(key) && entities[key].empty())
+				for (int y = coordinates.min_y; y <= coordinates.max_y; ++y)
 				{
-					entities.erase(key);
-				}
+					const auto key = get_key(x, y);
 
-				return true;
+					if (!entities[key].empty())
+					{
+						entities[key].erase(entity);
+					}
+				}
 			}
 
-			return false;
+			entity_to_coordinates.erase(entity);
+			
 		}
+
 		void insert(const ecs::entity entity, const SDL_FRect& entity_data)
 		{
-			// Compute the coordinates of the cell that the entity belongs to
-			const int x = static_cast<int>(std::floor((entity_data.x + (entity_data.w * 0.5f)) / CELL_SIZE));
-			const int y = static_cast<int>(std::floor((entity_data.y + (entity_data.h * 0.5f)) / CELL_SIZE));
-			const auto key = get_key(x, y);
+			const int min_x = static_cast<int>(std::floor((entity_data.x - (entity_data.w * 0.5f)) / CELL_SIZE));
+			const int max_x = static_cast<int>(std::ceil((entity_data.x + (entity_data.w * 0.5f)) / CELL_SIZE));
+			const int min_y = static_cast<int>(std::floor((entity_data.y - (entity_data.h * 0.5f)) / CELL_SIZE));
+			const int max_y = static_cast<int>(std::ceil((entity_data.y + (entity_data.h * 0.5f)) / CELL_SIZE));
+			entity_to_coordinates[entity] = {
+				min_x,
+				max_x,
+				min_y,
+				max_y
+			};
 
-			entities[key].insert(entity);
+			for (int x = min_x; x <= max_x; ++x)
+			{
+				for (int y = min_y; y <= max_y; ++y)
+				{
+					entities[get_key(x, y)].emplace(entity);
+				}
+			}
 		}
 
-		static std::string get_key(int x, int y)
+		static size_t get_key(int x, int y)
 		{
 			char buffer[15];
 			std::snprintf(buffer, sizeof(buffer), "%d,%d", x, y);
-			return std::string(buffer);
+			std::hash<std::string> hasher;
+			auto hashed = hasher(buffer);
+			return hashed;
 		}
 	};
 }

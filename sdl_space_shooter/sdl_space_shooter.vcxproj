@@ -181,7 +181,9 @@
     <ClCompile Include="src\ecs\components\damage.cpp" />
     <ClCompile Include="src\ecs\components\health.cpp" />
     <ClCompile Include="src\ecs\components\input.cpp" />
+    <ClCompile Include="src\ecs\components\layer.cpp" />
     <ClCompile Include="src\ecs\components\position.cpp" />
+    <ClCompile Include="src\ecs\components\removal_timer.cpp" />
     <ClCompile Include="src\ecs\components\rotation.cpp" />
     <ClCompile Include="src\ecs\components\texture.cpp" />
     <ClCompile Include="src\ecs\components\velocity.cpp" />
@@ -189,7 +191,10 @@
     <ClCompile Include="src\application\keyboard.cpp" />
     <ClCompile Include="src\ecs\systems\collision.cpp" />
     <ClCompile Include="src\ecs\systems\damage_collision.cpp" />
+    <ClCompile Include="src\ecs\systems\time_removal.cpp" />
     <ClCompile Include="src\ecs\systems\enemy_spawner.cpp" />
+    <ClCompile Include="src\ecs\systems\player_movement.cpp" />
+    <ClCompile Include="src\ecs\systems\laser_spawner.cpp" />
     <ClCompile Include="src\main.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
@@ -203,7 +208,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\ecs\systems\draw_system.cpp" />
-    <ClCompile Include="src\ecs\systems\input_system.cpp" />
+    <ClCompile Include="src\ecs\systems\player_input.cpp" />
     <ClCompile Include="src\ecs\systems\physics_system.cpp" />
     <ClCompile Include="src\window_data.cpp" />
   </ItemGroup>
@@ -212,6 +217,7 @@
     <ClInclude Include="src\application\application_props.h" />
     <ClInclude Include="src\application\interval.h" />
     <ClInclude Include="src\application\keyboard.h" />
+    <ClInclude Include="src\application\random.h" />
     <ClInclude Include="src\application\timer.h" />
     <ClInclude Include="src\collision\aabb.h" />
     <ClInclude Include="src\collision\spatial_grid.h" />
@@ -219,7 +225,9 @@
     <ClInclude Include="src\ecs\components\damage.h" />
     <ClInclude Include="src\ecs\components\health.h" />
     <ClInclude Include="src\ecs\components\input.h" />
+    <ClInclude Include="src\ecs\components\layer.h" />
     <ClInclude Include="src\ecs\components\position.h" />
+    <ClInclude Include="src\ecs\components\removal_timer.h" />
     <ClInclude Include="src\ecs\components\rotation.h" />
     <ClInclude Include="src\ecs\components\texture.h" />
     <ClInclude Include="src\ecs\components\velocity.h" />
@@ -228,25 +236,32 @@
     <ClInclude Include="src\ecs\entities\enemy.h" />
     <ClInclude Include="src\ecs\entities\entity_repository.h" />
     <ClInclude Include="src\ecs\components\component.h" />
+    <ClInclude Include="src\ecs\entities\laser.h" />
     <ClInclude Include="src\ecs\entities\player.h" />
     <ClInclude Include="src\ecs\entity.h" />
     <ClInclude Include="src\application\events.h" />
+    <ClInclude Include="src\ecs\layers_types.h" />
+    <ClInclude Include="src\ecs\setup_data.h" />
     <ClInclude Include="src\ecs\system.h" />
     <ClInclude Include="src\ecs\systems\collision.h" />
     <ClInclude Include="src\ecs\systems\damage_collision.h" />
+    <ClInclude Include="src\ecs\systems\time_removal.h" />
     <ClInclude Include="src\ecs\systems\enemy_spawner.h" />
+    <ClInclude Include="src\ecs\systems\player_movement.h" />
+    <ClInclude Include="src\ecs\systems\laser_spawner.h" />
     <ClInclude Include="src\ecs\world.h" />
     <ClInclude Include="src\application\math.h" />
     <ClInclude Include="src\ecs\systems\draw_system.h" />
-    <ClInclude Include="src\ecs\systems\input_system.h" />
+    <ClInclude Include="src\ecs\systems\player_input.h" />
     <ClInclude Include="src\ecs\systems\physics_system.h" />
     <ClInclude Include="src\application\texture_manager.h" />
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\window_data.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="C:\Users\Tomas\Downloads\spaceshooter\PNG\Lasers\laserRed16.png" />
     <Image Include="resources\background.png" />
-    <Image Include="resources\icon.png" />
+    <Image Include="resources\laser.png" />
     <Image Include="resources\meteor0.png" />
     <Image Include="resources\meteor1.png" />
     <Image Include="resources\meteor2.png" />

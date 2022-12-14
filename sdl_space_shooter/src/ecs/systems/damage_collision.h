@@ -1,8 +1,7 @@
 #pragma once
 
 #include "ecs/system.h"
-#include "collision/spatial_grid.h"
-#include "ecs/world.h"
+#include "ecs/setup_data.h"
 
 namespace ecs
 {
@@ -13,10 +12,12 @@ namespace ecs
         public:
             damage_collision(ecs::world<MAX_COMPONENTS, MAX_SYSTEMS>& world);
             void check_collision(const float dt);
+            void on_valid_entity_removed(entity entity) override;
         private:
-            std::unordered_map<ecs::entity, std::future<std::set<ecs::entity>>> futures;
-            void find_near_entities(const std::vector<entity>& entities);
-            std::set<ecs::entity> apply_damage(const ecs::entity entity, const std::set<ecs::entity>& nearby_entities) const;
+            void group_search(const std::vector<ecs::entity>& entities);
+            std::unordered_map<ecs::entity, std::future<std::unordered_set<ecs::entity>>> nearby_data_async;
+            void search_nearby_entities_async(const std::vector<entity>& entities);
+            std::unordered_set<ecs::entity> try_apply_damage(const ecs::entity entity, const std::unordered_set<ecs::entity>& nearby_entities) const;
             const SDL_FRect get_rect_data(entity entity) const;
         };
     }

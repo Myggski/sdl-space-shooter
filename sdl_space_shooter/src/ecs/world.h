@@ -5,13 +5,10 @@
 #include "ecs/component_array.h"
 #include "ecs/entities/entity_repository.h"
 #include "ecs/system.h"
+#include "ecs/setup_data.h"
 
 namespace ecs
 {
-	constexpr size_t MAX_ENTITIES = 1024u;
-    constexpr size_t MAX_COMPONENTS = 32u;
-    constexpr size_t MAX_SYSTEMS = 8u;
-
     template<std::size_t component_count, std::size_t system_count>
     class world
     {
@@ -39,7 +36,7 @@ namespace ecs
             // uses std::forward to avoid reference collapsing
             // it will either copy or move the args depending on reference type
             auto& system = systems.emplace_back(std::make_unique<T>(std::forward<Args>(args)...));
-            system->setup(systems.size());
+            system->setup(systems.size(), MAX_ENTITIES);
             
             if (system->update)
             {
@@ -63,7 +60,6 @@ namespace ecs
                 }
             }
 
-            systems_updates.reserve(system_count);
             entity_repository.reserve(number_of_entities);
         }
 
@@ -73,8 +69,7 @@ namespace ecs
 	     */
 	    entity create_entity()
         {
-            auto entity = entity_repository.create();
-            return entity;
+            return entity_repository.create();
         }
 
 	    /**
@@ -83,17 +78,17 @@ namespace ecs
 	     */
 	    void remove_entity(entity entity)
         {
-            for (auto& system : systems)
-            {
-                system->on_entity_removed(entity);
-            }
-
             for (auto& component : components)
             {
                 if (component)
                 {
                     component->try_remove(entity);
                 }
+            }
+
+            for (auto& system : systems)
+            {
+                system->on_entity_removed(entity);
             }
 
             entity_repository.remove(entity);
@@ -204,12 +199,17 @@ namespace ecs
 		    }
 	    }
 
+        bool is_alive(entity entity) const
+	    {
+            return entity_repository.is_alive(entity);
+	    }
+
         /*
          * SPATIAL GRID
          */
-        void update_grid(ecs::entity entity, const SDL_FRect& old_rect_data, const SDL_FRect& new_rect_data)
+        void update_grid(ecs::entity entity, const SDL_FRect& new_rect_data)
 	    {
-            spatial_grid.update(entity, old_rect_data, new_rect_data);
+            spatial_grid.update(entity, new_rect_data);
 	    }
 
         void insert_to_grid(ecs::entity entity, const SDL_FRect& rect_data)
@@ -217,26 +217,31 @@ namespace ecs
             spatial_grid.insert(entity, rect_data);
         }
 
-        void remove_from_grid(ecs::entity entity, const SDL_FRect& rect_data)
+        void remove_from_grid(ecs::entity entity)
         {
-            spatial_grid.remove(entity, rect_data);
+            spatial_grid.remove(entity);
         }
 
-template<typename... Ts>
-std::set<entity> find_nearby_grid(const SDL_FRect& rect_data, const std::set<entity>& excluded_entities = {})
-{
-    std::bitset<component_count> excluded_all_components;
-    (excluded_all_components.set(Ts::type), ...);
+		template<typename... Ts>
+		std::unordered_set<entity> find_nearby_grid(const SDL_FRect& rect_data, const std::unordered_set<entity>& excluded_entities = {})
+		{
+		    std::bitset<component_count> include_all_components;
+		    (include_all_components.set(Ts::type), ...);
 
-    return std::move(spatial_grid.find_nearby(rect_data, excluded_all_components, excluded_entities));
-}
+		    return std::move(spatial_grid.find_nearby(rect_data, [&](ecs::entity entity)
+		    {
+                    return (excluded_entities.empty() || !excluded_entities.contains(entity))
+		    				&& (!include_all_components.any()
+								|| (include_all_components.any() && has_components(entity, include_all_components)));
+		    }));
+		}
         
     private:
         std::array<std::unique_ptr<base_component_array>, component_count> components{};
         entities::entity_repository<component_count> entity_repository{};
         std::vector<std::unique_ptr<system<component_count, system_count>>> systems{};
         std::vector<update_func> systems_updates{};
-		collision::spatial_grid<component_count, system_count> spatial_grid{ *this };
+		collision::spatial_grid<component_count, system_count> spatial_grid{};
 
         template<typename T>
         void check_component_type() const

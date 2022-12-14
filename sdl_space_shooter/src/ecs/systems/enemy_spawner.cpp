@@ -3,6 +3,7 @@
 #include "enemy_spawner.h"
 
 #include "application/interval.h"
+#include "application/random.h"
 #include "ecs/components/position.h"
 #include "ecs/components/velocity.h"
 #include "ecs/world.h"
@@ -19,14 +20,14 @@ namespace ecs
 
         enemy_spawner::enemy_spawner(ecs::world<MAX_COMPONENTS, MAX_SYSTEMS>& world, application::texture_manager& texture_manager)
             : system(world), texture_manager(texture_manager), current_timer(MAX_SPAWN_TIMER_START), next_spawn_time(MAX_SPAWN_TIMER_START),
-            max_spawn_timer(MAX_SPAWN_TIMER_START), min_spawn_timer(MIN_SPAWN_TIMER), number_of_enemies_to_spawn(100)
+            max_spawn_timer(MAX_SPAWN_TIMER_START), min_spawn_timer(MIN_SPAWN_TIMER), number_of_enemies_to_spawn(0)
         {
             set_all_requirements<components::position, components::velocity>();
             set_update([&](const float dt) { spawn_enemy(dt); });
 
             increase_spawning_interval = [&]() { max_spawn_timer -= 0.4f; };
             increase_spawning_enemies = [&]() { number_of_enemies_to_spawn += 1; };
-            
+
             application::interval::get_instance().insert(SPAWNING_TIMER_INTERVAL, &increase_spawning_interval);
             application::interval::get_instance().insert(SPAWNING_NUMBER_INTERVAL, &increase_spawning_enemies);
         }
@@ -43,14 +44,15 @@ namespace ecs
             {
                 for (int i = 0; i < number_of_enemies_to_spawn; i++)
                 {
-  
-                    entities::create_enemy(world, texture_manager, get_random<float>(0.f, 636.f));
+
+                    entities::create_enemy(world, texture_manager, application::get_random<float>(0.f, 636.f));
                 }
 
-                next_spawn_time = get_random(std::max(max_spawn_timer * 0.6f, min_spawn_timer), std::max(max_spawn_timer * 1.2f, min_spawn_timer));
+                next_spawn_time = application::get_random(std::max(max_spawn_timer * 0.6f, min_spawn_timer), std::max(max_spawn_timer * 1.2f, min_spawn_timer));
                 current_timer = 0.f;
 
             }
+
             current_timer += dt;
         }
     }

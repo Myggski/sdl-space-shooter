@@ -1,8 +1,7 @@
 #pragma once
 
 #include "ecs/system.h"
-#include "ecs/world.h"
-#include <SDL.h>
+#include "ecs/setup_data.h"
 
 namespace ecs
 {

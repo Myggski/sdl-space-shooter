@@ -20,11 +20,11 @@ namespace application
         this->renderer = renderer;
     }
 
-	SDL_Texture* texture_manager::get_image(const char* const file_path)
+	SDL_Texture* texture_manager::get_image(std::string file_path)
     {
         if (textures.contains(file_path)) { return textures.at(file_path); }
 
-        SDL_Surface* surface = IMG_Load(file_path);
+        SDL_Surface* surface = IMG_Load(file_path.c_str());
         assert(surface);
         
         SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);

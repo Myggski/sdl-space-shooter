@@ -11,12 +11,16 @@ namespace ecs
 		{
 		public:
 			input();
-			input(SDL_Scancode move_up, SDL_Scancode move_down, SDL_Scancode move_left, SDL_Scancode move_right);
+			input(SDL_Scancode move_up, SDL_Scancode move_down, SDL_Scancode move_left, SDL_Scancode move_right, SDL_Scancode fire_laser);
 
+			float x;
+			float y;
+			bool is_firing;
 			SDL_Scancode move_up;
 			SDL_Scancode move_down;
 			SDL_Scancode move_left;
 			SDL_Scancode move_right;
+			SDL_Scancode fire_laser;
 		};
 
 	}

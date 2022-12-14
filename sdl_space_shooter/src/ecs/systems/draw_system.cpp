@@ -5,6 +5,7 @@
 #include "ecs/components/position.h"
 #include "ecs/components/texture.h"
 #include "ecs/world.h"
+#include "ecs/components/layer.h"
 #include "ecs/components/rotation.h"
 
 namespace ecs
@@ -22,16 +23,27 @@ namespace ecs
         draw_system::draw_system(ecs::world<MAX_COMPONENTS, MAX_SYSTEMS>& world, SDL_Renderer* renderer)
             : system(world), renderer(renderer), is_dirty(true)
         {
-            set_all_requirements<components::position, components::texture>();
+            set_all_requirements<components::position, components::texture, components::layer>();
             set_update([&](const float dt) { draw(dt); });
         }
         void draw_system::draw(const float dt)
         {
             if (is_dirty)
             {
+                
                 draw_entities = get_entities();
+                std::unordered_map<ecs::entity, size_t> z_index_values;
+                z_index_values.reserve(draw_entities.size());
+
+                for (const auto& entity : draw_entities)
+                {
+                    z_index_values.emplace(entity, world.get_component<components::texture>(entity).z_index);
+                }
+
                 std::ranges::sort(draw_entities, [&](const entity& a, const entity& b) {
-                    return a > b;
+						auto d = z_index_values[a];
+						auto e = z_index_values[b];
+						return d < e;
                     });
 
                 is_dirty = false;
@@ -48,14 +60,13 @@ namespace ecs
                 application::texture_manager::draw_texture(renderer, texture.image, &texture_rect, angle);
             }
 
-
-            printf("enemies: %d %f\n", draw_entities.size(), 1.f / dt);
+            printf("FPS: %f - ENEMIES - %llu\n", 1.f / dt, draw_entities.size());
         }
 
         void draw_system::on_valid_entity_added(entity entity)
         {
-            auto texture = world.get_component<components::texture>(entity);
-            texture.z_index = static_cast<unsigned long long>(entity) + (50000 * texture.rendering_layer.to_ullong());
+            auto [texture, layer] = world.get_components<components::texture, components::layer>(entity);
+            texture.z_index = static_cast<size_t>(entity) + (500000 * static_cast<size_t>(layer.layer_type));
 
             is_dirty = true;
         }

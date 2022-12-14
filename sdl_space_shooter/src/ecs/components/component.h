@@ -17,6 +17,8 @@ namespace ecs
             damage,
             health,
             rotation,
+            layer,
+            removal_timer,
         };
         template<typename T, auto Type>
         class component

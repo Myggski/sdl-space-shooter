@@ -27,14 +27,13 @@ namespace ecs
 
                 position.x += velocity.x * 100.f * dt;
                 position.y += velocity.y * 100.f * dt;
-
+                
                 if (world.has_component<components::box_collider>(entity) && (old_position.x - position.x != 0.f || old_position.y - position.y != 0.f))
                 {
                     const auto box_collider = world.get_component<components::box_collider>(entity);
-                    const auto old_rect_data = collision::get_rect_data(old_position, box_collider);
                     const auto new_rect_data = collision::get_rect_data(position, box_collider);
 
-                    world.update_grid(entity, old_rect_data, new_rect_data);
+                    world.update_grid(entity, new_rect_data);
                 }
             }
         }

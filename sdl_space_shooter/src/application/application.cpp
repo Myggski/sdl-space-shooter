@@ -11,6 +11,7 @@
 #include "ecs/components/health.h"
 #include "ecs/entity.h"
 #include "ecs/world.h"
+#include "ecs/components/removal_timer.h"
 #include "ecs/components/rotation.h"
 #include "ecs/entities/enemy.h"
 #include "ecs/entities/player.h"
@@ -18,8 +19,11 @@
 #include "ecs/systems/damage_collision.h"
 #include "ecs/systems/draw_system.h"
 #include "ecs/systems/enemy_spawner.h"
-#include "ecs/systems/input_system.h"
+#include "ecs/systems/player_input.h"
 #include "ecs/systems/physics_system.h"
+#include "ecs/systems/player_movement.h"
+#include "ecs/systems/laser_spawner.h"
+#include "ecs/systems/time_removal.h"
 
 namespace application
 {
@@ -61,7 +65,7 @@ namespace application
 		texture_manager.init(renderer);
 
 		auto world = ecs::world<ecs::MAX_COMPONENTS, ecs::MAX_SYSTEMS>();
-		world.reserve(50240);
+		world.reserve(ecs::MAX_ENTITIES);
 		world.register_component<ecs::components::input>();
 		world.register_component<ecs::components::position>();
 		world.register_component<ecs::components::velocity>();
@@ -70,23 +74,27 @@ namespace application
 		world.register_component<ecs::components::damage>();
 		world.register_component<ecs::components::health>();
 		world.register_component<ecs::components::rotation>();
+		world.register_component<ecs::components::layer>();
+		world.register_component<ecs::components::removal_timer>();
 
-		world.create_system<ecs::systems::input_system>(world, keyboard_input);
+		world.create_system<ecs::systems::player_input>(world, keyboard_input);
+		world.create_system<ecs::systems::laser_spawner>(world, texture_manager);
+		world.create_system<ecs::systems::player_movement>(world);
 		world.create_system<ecs::systems::physics_system>(world);
-		world.create_system<ecs::systems::enemy_spawner>(world, texture_manager);
 		world.create_system<ecs::systems::collision>(world);
 		world.create_system<ecs::systems::damage_collision>(world);
+		world.create_system<ecs::systems::enemy_spawner>(world, texture_manager);
 		world.create_system<ecs::systems::draw_system>(world, renderer);
+		world.create_system<ecs::systems::time_removal>(world);
 
 		// Background
 		const auto background = world.create_entity();
 		world.add_component<ecs::components::position>(background, ecs::components::position(0, 0));
+		world.add_component<ecs::components::layer>(background, ecs::components::layer());
 		world.add_component<ecs::components::texture>(background, ecs::components::texture(texture_manager.get_image("resources/background.png"), 1280.f, 720.f));
 
 		// Player
-		const auto player = ecs::entities::create_player(world, texture_manager, ecs::components::position(64.f, 360.f));
-
-		//world.remove_entity(entity);
+		ecs::entities::create_player(world, texture_manager, ecs::components::position(64.f, 360.f));
 
 		while (is_running) {
 			time.refresh_dt();
