@@ -14,6 +14,7 @@ namespace ecs
 			layer(ecs::layers_types layer_type);
 
 			ecs::layers_types layer_type;
+			size_t z_index;
 		};
 	}
 }

@@ -11,6 +11,7 @@
 #include "ecs/components/damage.h"
 #include "ecs/components/health.h"
 #include "ecs/components/layer.h"
+#include "ecs/components/points.h"
 
 namespace ecs
 {
@@ -56,6 +57,12 @@ namespace ecs
 
             for (auto& dead_entity : dead_entites_to_remove)
             {
+                // Don't look, ugly :(
+                if (world.get_component<components::layer>(dead_entity).layer_type == layers_types::enemy)
+                {
+                    world.add_component<components::points>(dead_entity, components::points(5));
+                }
+
                 world.remove_entity(dead_entity);
             }
         }
@@ -103,12 +110,12 @@ namespace ecs
             {
                 if (world.has_component<components::health>(nearby_entity))
                 {
-                    const auto nearby_layer = world.has_component<components::layer>(nearby_entity)
+                    const auto nearby_entity_layer = world.has_component<components::layer>(nearby_entity)
                         ? world.get_component<components::layer>(nearby_entity).layer_type
                         : layers_types::none;
 
                     auto& collide_layer = world.get_component<components::box_collider>(entity).collides_with;
-                    std::bitset<3> nearby_collide_layer{ static_cast<size_t>(nearby_layer) };
+                    ecs::components::collide_layer nearby_collide_layer{ static_cast<size_t>(nearby_entity_layer) };
 
 
                     if ((collide_layer & nearby_collide_layer) != collide_layer)

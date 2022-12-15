@@ -4,7 +4,6 @@
 #include <unordered_map>
 #include <iterator>
 #include "ecs/entity.h"
-#include "ecs/setup_data.h"
 
 namespace ecs
 {
@@ -29,39 +28,41 @@ namespace collision
 	{
 		friend ::ecs::world<component_count, system_count>;
 	public:
-		spatial_grid()
+		spatial_grid(size_t max_entities, float grid_width, float grid_height)
 		{
-			entities.reserve(1280 / CELL_SIZE * 720 / CELL_SIZE);
-			entity_to_coordinates.reserve(ecs::MAX_ENTITIES);
+			entities.reserve(grid_width / CELL_SIZE * grid_height / CELL_SIZE);
+			entity_to_coordinates.reserve(max_entities);
 
-			for (int x = 0; x < 1280 / CELL_SIZE; x++)
+			// Calculate the number of cells in the x and y directions
+			const int max_cells_x = grid_width / CELL_SIZE;
+			const int max_cells_y = grid_height / CELL_SIZE;
+			const int cell_size = max_cells_x * max_cells_y;
+
+			for (int i = 0; i < cell_size; i++)
 			{
-				for (int y = 0; y < 720 / CELL_SIZE; y++)
-				{
-					entities[get_key(x, y)].reserve(ecs::MAX_ENTITIES);
-				}
+				entities[get_key(i / max_cells_y, i % max_cells_y)].reserve(max_entities);
 			}
 		}
 
 		std::unordered_set<ecs::entity> find_nearby(const SDL_FRect& entity_data, std::function<bool(ecs::entity)> include_func)
 		{
+			std::unordered_set<ecs::entity> nearby_entities;
 			const int min_x = static_cast<int>(std::floor((entity_data.x - (entity_data.w * 0.5f)) / CELL_SIZE));
 			const int max_x = static_cast<int>(std::ceil((entity_data.x + (entity_data.w * 0.5f)) / CELL_SIZE));
 			const int min_y = static_cast<int>(std::floor((entity_data.y - (entity_data.h * 0.5f)) / CELL_SIZE));
 			const int max_y = static_cast<int>(std::ceil((entity_data.y + (entity_data.h * 0.5f)) / CELL_SIZE));
+			const int cell_size = (max_x - min_x + 1) * (max_y - min_y + 1);
+			
 
-			std::unordered_set<ecs::entity> nearby_entities;
-
-			for (int x = min_x; x <= max_x; ++x)
+			for (int i = 0; i < cell_size; i++)
 			{
-				for (int y = min_y; y <= max_y; ++y)
-				{
-					auto key = get_key(x, y);
+				const int x = min_x + i / (max_y - min_y + 1);
+				const int y = min_y + i % (max_y - min_y + 1);
+				const auto key = get_key(x, y);
 
-					if (!entities[key].empty())
-					{
-						std::ranges::copy_if(entities[key], std::inserter(nearby_entities, nearby_entities.begin()), include_func);
-					}
+				if (!entities[key].empty())
+				{
+					std::ranges::copy_if(entities[key], std::inserter(nearby_entities, nearby_entities.begin()), include_func);
 				}
 			}
 
@@ -80,23 +81,23 @@ namespace collision
 		void remove(const ecs::entity entity)
 		{
 			const auto& coordinates = entity_to_coordinates[entity];
+			const auto cell_size = (coordinates.max_x - coordinates.min_x + 1) * (coordinates.max_y - coordinates.min_y + 1);
 
-			for (int x = coordinates.min_x; x <= coordinates.max_x; ++x)
+			for (int i = 0; i < cell_size; ++i)
 			{
-				for (int y = coordinates.min_y; y <= coordinates.max_y; ++y)
-				{
-					const auto key = get_key(x, y);
+				const int x = coordinates.min_x + i / (coordinates.max_y - coordinates.min_y + 1);
+				const int y = coordinates.min_y + i % (coordinates.max_y - coordinates.min_y + 1);
+				const auto key = get_key(x, y);
 
-					if (!entities[key].empty())
-					{
-						entities[key].erase(entity);
-					}
+				if (!entities[key].empty())
+				{
+					entities[key].erase(entity);
 				}
 			}
 
 			entity_to_coordinates.erase(entity);
-			
 		}
+
 
 		void insert(const ecs::entity entity, const SDL_FRect& entity_data)
 		{
@@ -104,20 +105,22 @@ namespace collision
 			const int max_x = static_cast<int>(std::ceil((entity_data.x + (entity_data.w * 0.5f)) / CELL_SIZE));
 			const int min_y = static_cast<int>(std::floor((entity_data.y - (entity_data.h * 0.5f)) / CELL_SIZE));
 			const int max_y = static_cast<int>(std::ceil((entity_data.y + (entity_data.h * 0.5f)) / CELL_SIZE));
+			const int cell_size = (max_x - min_x + 1) * (max_y - min_y + 1);
+
+			for (int i = 0; i < cell_size; ++i)
+			{
+				const int x = min_x + i / (max_y - min_y + 1);
+				const int y = min_y + i % (max_y - min_y + 1);
+
+				entities[get_key(x, y)].emplace(entity);
+			}
+
 			entity_to_coordinates[entity] = {
 				min_x,
 				max_x,
 				min_y,
 				max_y
 			};
-
-			for (int x = min_x; x <= max_x; ++x)
-			{
-				for (int y = min_y; y <= max_y; ++y)
-				{
-					entities[get_key(x, y)].emplace(entity);
-				}
-			}
 		}
 
 		static size_t get_key(int x, int y)

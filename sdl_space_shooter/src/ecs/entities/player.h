@@ -15,35 +15,36 @@ namespace ecs
 {
 	namespace entities
 	{
+		constexpr float player_collision_percentage = 0.8f;
+		constexpr float player_width = 98.f;
+		constexpr float player_height = 75.f;
+		constexpr float player_collision_width = player_width * player_collision_percentage;
+		constexpr float player_collision_height = player_height * player_collision_percentage;
+		constexpr float player_collision_offset_x = player_width * (1.f - player_collision_percentage) / 2.f;
+		constexpr float player_collision_offset_y = player_height * (1.f - player_collision_percentage) / 2.f;
 
 		template<std::size_t component_count, std::size_t system_count>
 		inline entity create_player(world<component_count, system_count>& world, application::texture_manager& texture_manager, const components::position& position)
 		{
-			constexpr float collision_percentage = 0.7f;
-			constexpr float width = 98.f;
-			constexpr float height = 75.f;
-			constexpr float collision_width = width * collision_percentage;
-			constexpr float collision_height = height * collision_percentage;
-			constexpr float collision_offset_x = collision_width / 2.f;
-			constexpr float collision_offset_y = collision_height / 2.f;
+
 
 			const auto entity = world.create_entity();
 			world.add_component<ecs::components::position>(entity, position);
 			world.add_component<ecs::components::velocity>(entity, ecs::components::velocity(0, 0));
-			world.add_component<ecs::components::rotation>(entity, ecs::components::rotation(90));
 			world.add_component<ecs::components::damage>(entity, ecs::components::damage(1));
 			world.add_component<ecs::components::layer>(entity, ecs::components::layer(layers_types::player));
+			world.add_component<ecs::components::rotation>(entity, ecs::components::rotation(90));
 			world.add_component<ecs::components::box_collider>(entity, ecs::components::box_collider(
-				collision_width, 
-				collision_height, 
-				collision_offset_x, 
-				collision_offset_y,
+				player_collision_width,
+				player_collision_height,
+				player_collision_offset_x,
+				player_collision_offset_y,
 				static_cast<size_t>(layers_types::enemy)
 			));
 			world.add_component<ecs::components::texture>(entity, ecs::components::texture(
 				texture_manager.get_image("resources/player.png"),
-				width,
-				height
+				player_width,
+				player_height
 			));
 			world.add_component<ecs::components::input>(entity, ecs::components::input(
 				SDL_SCANCODE_W,

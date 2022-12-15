@@ -36,9 +36,9 @@ namespace application
         return texture;
     }
 
-    void texture_manager::draw_texture(SDL_Renderer* renderer, SDL_Texture* texture, const SDL_FRect* image_rect, double angle)
+    void texture_manager::draw_texture(SDL_Renderer* renderer, SDL_Texture* texture, const SDL_FRect& image_rect, double angle)
     {
-	    const SDL_FPoint center { image_rect->w * 0.5f, image_rect->h * 0.5f };
-        SDL_RenderCopyExF(renderer, texture, nullptr, image_rect, angle, &center, SDL_FLIP_NONE);
+	    const SDL_FPoint center { image_rect.w / 2.f, image_rect.h / 2.f };
+        SDL_RenderCopyExF(renderer, texture, nullptr, &image_rect, angle, &center, SDL_FLIP_NONE);
     }
 }

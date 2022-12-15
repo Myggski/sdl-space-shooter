@@ -1,6 +1,6 @@
 ﻿#include "pch.h"
 
-#include "player_movement.h"
+#include "player_velocity.h"
 #include "ecs/components/input.h"
 #include "ecs/components/velocity.h"
 #include "ecs/world.h"
@@ -11,16 +11,16 @@ namespace ecs
     namespace systems
     {
         constexpr float SPEED = 15;
-        constexpr float FRICTION = 3.5;
+        constexpr float FRICTION = 2.5;
 
-        player_movement::player_movement(ecs::world<MAX_COMPONENTS, MAX_SYSTEMS>& world)
+        player_velocity::player_velocity(ecs::world<MAX_COMPONENTS, MAX_SYSTEMS>& world)
             : system(world)
         {
             set_all_requirements<components::input, components::velocity>();
             set_update([&](const float dt) { update_velocity(dt); });
         }
 
-        void player_movement::update_velocity(const float dt) const
+        void player_velocity::update_velocity(const float dt) const
         {
             for (const auto& entity : get_entities())
             {

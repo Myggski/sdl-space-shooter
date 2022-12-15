@@ -87,7 +87,7 @@
     <ClCompile Include="src\application\interval.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ecs\systems\player_movement.cpp">
+    <ClCompile Include="src\ecs\systems\player_velocity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\ecs\systems\laser_spawner.cpp">
@@ -100,6 +100,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\ecs\components\removal_timer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\application\font_manager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ecs\components\text.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ecs\systems\scoreboard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ecs\components\points.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -215,7 +227,7 @@
     <ClInclude Include="src\ecs\entities\laser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\ecs\systems\player_movement.h">
+    <ClInclude Include="src\ecs\systems\player_velocity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\ecs\systems\laser_spawner.h">
@@ -234,6 +246,24 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\ecs\components\removal_timer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\SDL2_image\include\SDL_image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\application\font_manager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\SDL2_ttf\include\SDL_ttf.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ecs\components\text.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ecs\systems\scoreboard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ecs\components\points.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -256,11 +286,24 @@
     <Image Include="resources\background.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="C:\Users\Tomas\Downloads\spaceshooter\PNG\Lasers\laserRed16.png">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="resources\laser.png">
       <Filter>Resource Files</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="lib\SDL2\lib\x64\SDL2.dll" />
+    <None Include="lib\SDL2_image\lib\x64\SDL2_image.dll" />
+    <None Include="lib\SDL2_image\lib\x86\SDL2_image.dll" />
+    <None Include="lib\SDL2_ttf\lib\x64\SDL2_ttf.dll" />
+    <None Include="lib\SDL2_ttf\lib\x86\SDL2_ttf.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="lib\SDL2\lib\x64\SDL2.lib" />
+    <Library Include="lib\SDL2\lib\x64\SDL2main.lib" />
+    <Library Include="lib\SDL2\lib\x64\SDL2test.lib" />
+    <Library Include="lib\SDL2_image\lib\x64\SDL2_image.lib" />
+    <Library Include="lib\SDL2_image\lib\x86\SDL2_image.lib" />
+    <Library Include="lib\SDL2_ttf\lib\x64\SDL2_ttf.lib" />
+    <Library Include="lib\SDL2_ttf\lib\x86\SDL2_ttf.lib" />
   </ItemGroup>
 </Project>

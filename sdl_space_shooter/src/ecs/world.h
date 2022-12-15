@@ -13,6 +13,7 @@ namespace ecs
     class world
     {
     public:
+        world(int width, int height) : width(width), height(height), spatial_grid(MAX_ENTITIES, width, height) {}
 	    /**
 	     * \brief Creates a component array of the specific type of component
 	     * \tparam T is of class component
@@ -191,6 +192,16 @@ namespace ecs
             }
         }
 
+        const int get_width() const
+        {
+            return width;
+        }
+
+        const int get_height() const
+        {
+            return height;
+        }
+
         void update(float dt) const
         {
 		    for (auto& system_update : systems_updates)
@@ -237,11 +248,13 @@ namespace ecs
 		}
         
     private:
+        int width;
+        int height;
         std::array<std::unique_ptr<base_component_array>, component_count> components{};
         entities::entity_repository<component_count> entity_repository{};
         std::vector<std::unique_ptr<system<component_count, system_count>>> systems{};
         std::vector<update_func> systems_updates{};
-		collision::spatial_grid<component_count, system_count> spatial_grid{};
+		collision::spatial_grid<component_count, system_count> spatial_grid;
 
         template<typename T>
         void check_component_type() const

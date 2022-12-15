@@ -43,6 +43,12 @@ namespace ecs
             (any_requirements.set(Ts::type), ...);
         }
 
+        template<typename ...Ts>
+        void set_none_requirements()
+        {
+            (any_requirements.set(Ts::type), ...);
+        }
+
         /**
          * \brief Returns valid entities
          * \return Valid entities that is meeting the component requirements for the system
@@ -60,6 +66,7 @@ namespace ecs
         update_func update;
         std::bitset<component_count> all_requirements;
         std::bitset<component_count> any_requirements;
+        std::bitset<component_count> none_requirements;
         std::size_t system_id{};
         std::vector<entity> valid_entities;
         std::unordered_map<entity, index> entity_to_valid_entity;
@@ -85,12 +92,17 @@ namespace ecs
             bool satisfied = true;
             const bool managed = entity_to_valid_entity.contains(entity) && entity_to_valid_entity[entity] != invalid_entity_id;
 
-            if (any_requirements.any())
+            if (none_requirements.any())
+            {
+                satisfied = (none_requirements & components) == 0;
+            }
+
+            if (satisfied && any_requirements.any())
             {
                 satisfied = (any_requirements & components) != 0;
             }
 
-            if (all_requirements.any() && satisfied)
+            if (satisfied && all_requirements.any())
             {
                 satisfied = (all_requirements & components) == all_requirements;
             }

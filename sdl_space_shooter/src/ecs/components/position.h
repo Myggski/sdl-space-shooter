@@ -14,6 +14,8 @@ namespace ecs
 
 			float x;
 			float y;
+			float old_x;
+			float old_y;
 		};
 	}
 }

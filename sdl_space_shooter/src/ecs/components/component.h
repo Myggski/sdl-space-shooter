@@ -19,6 +19,8 @@ namespace ecs
             rotation,
             layer,
             removal_timer,
+            text,
+            points,
         };
         template<typename T, auto Type>
         class component

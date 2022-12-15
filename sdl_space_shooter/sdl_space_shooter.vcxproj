@@ -88,7 +88,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\FutureGames\Projects\sdl-space-shooter\sdl_space_shooter\src;$(SolutionDir)\$(ProjectName)\lib\SDL2\include;$(SolutionDir)\$(ProjectName)\lib\SDL2_image\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\$(ProjectName)\lib\SDL2_ttf\include;$(SolutionDir)\$(ProjectName)\src;$(SolutionDir)\$(ProjectName)\lib\SDL2\include;$(SolutionDir)\$(ProjectName)\lib\SDL2_image\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp20</LanguageStandard>
@@ -97,8 +97,8 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)\$(ProjectName)\lib\SDL2\lib\x64;$(SolutionDir)\$(ProjectName)\lib\SDL2_image\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\$(ProjectName)\lib\SDL2\lib\x64;$(SolutionDir)\$(ProjectName)\lib\SDL2_ttf\lib\x64;$(SolutionDir)\$(ProjectName)\lib\SDL2_image\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -109,7 +109,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\FutureGames\Projects\sdl-space-shooter\sdl_space_shooter\src;$(SolutionDir)\$(ProjectName)\lib\SDL2\include;$(SolutionDir)\$(ProjectName)\lib\SDL2_image\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\$(ProjectName)\lib\SDL2_ttf\include;$(SolutionDir)\$(ProjectName)\src;$(SolutionDir)\$(ProjectName)\lib\SDL2\include;$(SolutionDir)\$(ProjectName)\lib\SDL2_image\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp20</LanguageStandard>
@@ -120,8 +120,8 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)\$(ProjectName)\lib\SDL2\lib\x64;$(SolutionDir)\$(ProjectName)\lib\SDL2_image\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\$(ProjectName)\lib\SDL2\lib\x64;$(SolutionDir)\$(ProjectName)\lib\SDL2_ttf\lib\x64;$(SolutionDir)\$(ProjectName)\lib\SDL2_image\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -130,7 +130,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\FutureGames\Projects\sdl-space-shooter\sdl_space_shooter\src;$(SolutionDir)\$(ProjectName)\lib\SDL2\include;$(SolutionDir)\$(ProjectName)\lib\SDL2_image\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\$(ProjectName)\lib\SDL2_ttf\include;$(SolutionDir)\$(ProjectName)\src;$(SolutionDir)\$(ProjectName)\lib\SDL2\include;$(SolutionDir)\$(ProjectName)\lib\SDL2_image\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp20</LanguageStandard>
@@ -139,8 +139,8 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)\$(ProjectName)\lib\SDL2\lib\x64;$(SolutionDir)\$(ProjectName)\lib\SDL2_image\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\$(ProjectName)\lib\SDL2\lib\x64;$(SolutionDir)\$(ProjectName)\lib\SDL2_ttf\lib\x64;$(SolutionDir)\$(ProjectName)\lib\SDL2_image\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -151,7 +151,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\FutureGames\Projects\sdl-space-shooter\sdl_space_shooter\src;$(SolutionDir)\$(ProjectName)\lib\SDL2\include;$(SolutionDir)\$(ProjectName)\lib\SDL2_image\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\$(ProjectName)\lib\SDL2_ttf\include;$(SolutionDir)\$(ProjectName)\src;$(SolutionDir)\$(ProjectName)\lib\SDL2\include;$(SolutionDir)\$(ProjectName)\lib\SDL2_image\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp20</LanguageStandard>
@@ -162,13 +162,14 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)\$(ProjectName)\lib\SDL2\lib\x64;$(SolutionDir)\$(ProjectName)\lib\SDL2_image\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\$(ProjectName)\lib\SDL2\lib\x64;$(SolutionDir)\$(ProjectName)\lib\SDL2_ttf\lib\x64;$(SolutionDir)\$(ProjectName)\lib\SDL2_image\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\application\application.cpp" />
     <ClCompile Include="src\application\application_props.cpp" />
+    <ClCompile Include="src\application\font_manager.cpp" />
     <ClCompile Include="src\application\interval.cpp" />
     <ClCompile Include="src\application\timer.cpp">
       <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
@@ -182,18 +183,21 @@
     <ClCompile Include="src\ecs\components\health.cpp" />
     <ClCompile Include="src\ecs\components\input.cpp" />
     <ClCompile Include="src\ecs\components\layer.cpp" />
+    <ClCompile Include="src\ecs\components\points.cpp" />
     <ClCompile Include="src\ecs\components\position.cpp" />
     <ClCompile Include="src\ecs\components\removal_timer.cpp" />
     <ClCompile Include="src\ecs\components\rotation.cpp" />
+    <ClCompile Include="src\ecs\components\text.cpp" />
     <ClCompile Include="src\ecs\components\texture.cpp" />
     <ClCompile Include="src\ecs\components\velocity.cpp" />
     <ClCompile Include="src\application\texture_manager.cpp" />
     <ClCompile Include="src\application\keyboard.cpp" />
     <ClCompile Include="src\ecs\systems\collision.cpp" />
     <ClCompile Include="src\ecs\systems\damage_collision.cpp" />
+    <ClCompile Include="src\ecs\systems\scoreboard.cpp" />
     <ClCompile Include="src\ecs\systems\time_removal.cpp" />
     <ClCompile Include="src\ecs\systems\enemy_spawner.cpp" />
-    <ClCompile Include="src\ecs\systems\player_movement.cpp" />
+    <ClCompile Include="src\ecs\systems\player_velocity.cpp" />
     <ClCompile Include="src\ecs\systems\laser_spawner.cpp" />
     <ClCompile Include="src\main.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
@@ -213,8 +217,11 @@
     <ClCompile Include="src\window_data.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="lib\SDL2_image\include\SDL_image.h" />
+    <ClInclude Include="lib\SDL2_ttf\include\SDL_ttf.h" />
     <ClInclude Include="src\application\application.h" />
     <ClInclude Include="src\application\application_props.h" />
+    <ClInclude Include="src\application\font_manager.h" />
     <ClInclude Include="src\application\interval.h" />
     <ClInclude Include="src\application\keyboard.h" />
     <ClInclude Include="src\application\random.h" />
@@ -226,9 +233,11 @@
     <ClInclude Include="src\ecs\components\health.h" />
     <ClInclude Include="src\ecs\components\input.h" />
     <ClInclude Include="src\ecs\components\layer.h" />
+    <ClInclude Include="src\ecs\components\points.h" />
     <ClInclude Include="src\ecs\components\position.h" />
     <ClInclude Include="src\ecs\components\removal_timer.h" />
     <ClInclude Include="src\ecs\components\rotation.h" />
+    <ClInclude Include="src\ecs\components\text.h" />
     <ClInclude Include="src\ecs\components\texture.h" />
     <ClInclude Include="src\ecs\components\velocity.h" />
     <ClInclude Include="src\ecs\base_component_array.h" />
@@ -245,9 +254,10 @@
     <ClInclude Include="src\ecs\system.h" />
     <ClInclude Include="src\ecs\systems\collision.h" />
     <ClInclude Include="src\ecs\systems\damage_collision.h" />
+    <ClInclude Include="src\ecs\systems\scoreboard.h" />
     <ClInclude Include="src\ecs\systems\time_removal.h" />
     <ClInclude Include="src\ecs\systems\enemy_spawner.h" />
-    <ClInclude Include="src\ecs\systems\player_movement.h" />
+    <ClInclude Include="src\ecs\systems\player_velocity.h" />
     <ClInclude Include="src\ecs\systems\laser_spawner.h" />
     <ClInclude Include="src\ecs\world.h" />
     <ClInclude Include="src\application\math.h" />
@@ -259,7 +269,6 @@
     <ClInclude Include="src\window_data.h" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="C:\Users\Tomas\Downloads\spaceshooter\PNG\Lasers\laserRed16.png" />
     <Image Include="resources\background.png" />
     <Image Include="resources\laser.png" />
     <Image Include="resources\meteor0.png" />
@@ -267,6 +276,22 @@
     <Image Include="resources\meteor2.png" />
     <Image Include="resources\meteor3.png" />
     <Image Include="resources\player.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="lib\SDL2\lib\x64\SDL2.dll" />
+    <None Include="lib\SDL2_image\lib\x64\SDL2_image.dll" />
+    <None Include="lib\SDL2_image\lib\x86\SDL2_image.dll" />
+    <None Include="lib\SDL2_ttf\lib\x64\SDL2_ttf.dll" />
+    <None Include="lib\SDL2_ttf\lib\x86\SDL2_ttf.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="lib\SDL2\lib\x64\SDL2.lib" />
+    <Library Include="lib\SDL2\lib\x64\SDL2main.lib" />
+    <Library Include="lib\SDL2\lib\x64\SDL2test.lib" />
+    <Library Include="lib\SDL2_image\lib\x64\SDL2_image.lib" />
+    <Library Include="lib\SDL2_image\lib\x86\SDL2_image.lib" />
+    <Library Include="lib\SDL2_ttf\lib\x64\SDL2_ttf.lib" />
+    <Library Include="lib\SDL2_ttf\lib\x86\SDL2_ttf.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
