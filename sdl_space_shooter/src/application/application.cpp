@@ -59,7 +59,9 @@ namespace application
 
 	void application::run_game()
 	{
-		assert(font_manager::get_instance().init());
+		auto font_init = font_manager::get_instance().init();
+		assert(font_init < 0);
+
 		font_manager::get_instance().load("default", "resources/fonts/Silver.ttf", 48);
 
 		SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
@@ -84,7 +86,6 @@ namespace application
 		world.register_component<ecs::components::text>();
 		world.register_component<ecs::components::points>();
 		
-
 		world.create_system<ecs::systems::player_input>(world, keyboard_input);
 		world.create_system<ecs::systems::laser_spawner>(world, texture_manager);
 		world.create_system<ecs::systems::player_velocity>(world);

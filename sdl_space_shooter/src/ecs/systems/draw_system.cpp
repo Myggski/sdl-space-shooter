@@ -86,7 +86,6 @@ namespace ecs
             }
         }
 
-
         void draw_system::on_valid_entity_added(entity entity)
         {
             auto& layer = world.get_component<components::layer>(entity);

@@ -26,8 +26,6 @@ namespace ecs
 		template<std::size_t component_count, std::size_t system_count>
 		inline entity create_player(world<component_count, system_count>& world, application::texture_manager& texture_manager, const components::position& position)
 		{
-
-
 			const auto entity = world.create_entity();
 			world.add_component<ecs::components::position>(entity, position);
 			world.add_component<ecs::components::velocity>(entity, ecs::components::velocity(0, 0));

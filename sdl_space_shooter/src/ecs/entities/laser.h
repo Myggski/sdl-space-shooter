@@ -26,15 +26,15 @@ namespace ecs
 			constexpr float height = 54.f;
 			constexpr float collision_height = height * collision_percentage;
 			constexpr float collision_width = width * collision_percentage;
-			constexpr float collision_offset_x = -(height * 0.5f) + (width * 2.f);
-			constexpr float collision_offset_y = (height * 0.5f) - (width * 2.f);
+			constexpr float collision_offset_x = -(height * 0.5f) + (width * 0.5f);
+			constexpr float collision_offset_y = (height * 0.5f) - (width * 0.5f);
 
 			const auto entity = world.create_entity();
 			
 			world.add_component<ecs::components::position>(entity, position);
 			world.add_component<ecs::components::box_collider>(entity, ecs::components::box_collider(
-				collision_width, 
 				collision_height,
+				collision_width, 
 				collision_offset_x,
 				collision_offset_y,
 				static_cast<size_t>(layers_types::enemy)
