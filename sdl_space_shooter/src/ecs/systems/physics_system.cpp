@@ -82,7 +82,7 @@ namespace ecs
             {
                 out_of_bound_direction.y -= 1.f;
             }
-            else if (bounded_rotation_rect.y + bounded_rotation_rect.h > world.get_height())
+            else if (bounded_rotation_rect.y + bounded_rotation_rect.h >= world.get_height())
             {
                 out_of_bound_direction.y += 1.f;
             }
@@ -90,7 +90,7 @@ namespace ecs
             if (out_of_bound_direction.x != 0.f)
             {
                 new_position.x = round(out_of_bound_direction.x < 0.f ? -rotation_diff_x : world.get_width() - bounded_rotation_rect.w - rotation_diff_x);
-                velocity.x *= 1.f * out_of_bound_direction.x;
+                velocity.x = -math::dot(velocity.x, velocity.y, out_of_bound_direction.x, out_of_bound_direction.y) * out_of_bound_direction.x;
 
                 if (abs(new_position.x - old_position.x) <= 0.9f)
                 {
@@ -100,7 +100,7 @@ namespace ecs
             else if (out_of_bound_direction.y != 0.f)
             {
                 new_position.y = round(out_of_bound_direction.y < 0.f ? rotation_diff_y : world.get_height() - bounded_rotation_rect.h + rotation_diff_y);
-                velocity.y *= 1.f * out_of_bound_direction.y;
+                velocity.y = -math::dot(velocity.x, velocity.y, out_of_bound_direction.x, out_of_bound_direction.y) * out_of_bound_direction.y;
 
                 if (abs(new_position.y - old_position.y) <= 0.9f)
                 {

@@ -60,7 +60,7 @@ namespace application
 	void application::run_game()
 	{
 		auto font_init = font_manager::get_instance().init();
-		assert(font_init < 0);
+		assert(font_init);
 
 		font_manager::get_instance().load("default", "resources/fonts/Silver.ttf", 48);
 

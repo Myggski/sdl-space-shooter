@@ -18,6 +18,11 @@ namespace math
         return (degrees * TAU) / 360.f;
     }
 
+    inline const float dot(float x1, float y1, float x2, float y2)
+    {
+        return x1 * x2 + y1 * y2;
+    }
+
     inline SDL_FRect get_bound_rect(const SDL_FRect& rect_to_rotate, float degrees)
     {
         const SDL_Point center = {
