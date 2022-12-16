@@ -1,4 +1,5 @@
 #include "pch.h"
+
 #include "window_data.h"
 
 window_data::window_data(const char* name, int window_width, int window_height)
