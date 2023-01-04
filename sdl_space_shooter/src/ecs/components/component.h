@@ -22,6 +22,7 @@ namespace ecs
             text,
             points,
         };
+
         template<typename T, auto Type>
         class component
         {

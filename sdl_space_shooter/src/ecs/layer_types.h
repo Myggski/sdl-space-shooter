@@ -2,7 +2,7 @@
 
 namespace ecs
 {
-	enum class layers_types
+	enum class layer_types
 	{
 		none,
 		enemy,

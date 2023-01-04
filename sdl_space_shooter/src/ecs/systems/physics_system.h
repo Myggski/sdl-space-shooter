@@ -16,8 +16,9 @@ namespace ecs
         {
         public:
             physics_system(ecs::world<MAX_COMPONENTS, MAX_SYSTEMS>& world);
+
         private:
-            void player_screen_wrap(ecs::entity entity, ecs::components::velocity& velocity, SDL_FPoint& new_position, const SDL_FPoint& old_position);
+            void player_screen_wrap(ecs::entity entity, ecs::components::velocity& velocity, SDL_FPoint& new_position, const SDL_FPoint& old_position) const;
             void try_update_position(const float dt);
         };
     }

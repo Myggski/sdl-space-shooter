@@ -1,6 +1,8 @@
 #pragma once
 
 #include "collision/spatial_grid.h"
+#include "collision/quad_tree.h"
+#include "collision/spatial_data_structure_factory.h"
 #include "ecs/base_component_array.h"
 #include "ecs/component_array.h"
 #include "ecs/entities/entity_repository.h"
@@ -9,15 +11,29 @@
 
 namespace ecs
 {
-    template<std::size_t component_count, std::size_t system_count>
+    template<size_t component_count, size_t system_count>
     class world
     {
     public:
-        world(int width, int height) : width(width), height(height), spatial_grid(MAX_ENTITIES, width, height) {}
-	    /**
-	     * \brief Creates a component array of the specific type of component
-	     * \tparam T is of class component
-	     */
+        world(int width, int height)
+    	: width(width),
+    	height(height),
+        entity_repository({}),
+        systems_updates({}),
+        components({}),
+    	spatial_structure(collision::spatial_data_structure_factory<ecs::entity>::create(
+            collision::spatial_structure_types::QUADTREE, 
+            width, 
+            height,
+            20000
+        ))
+        {
+            systems.reserve(system_count);
+        }
+
+        /*
+         * COMPONENT FUNCTIONS
+         */
 	    template<typename T>
         void register_component()
         {
@@ -26,57 +42,11 @@ namespace ecs
                 entity_repository.get_entity_to_component(T::type), entity_repository.get_entities());
         }
 
-	    /**
-	     * \brief Adding system to list of systems
-	     * \tparam T System type
-	     * \return The system that's being added to the world
-	     */
-	    template<typename T, typename ...Args>
-        T* create_system(Args&& ...args)
-        {
-            // uses std::forward to avoid reference collapsing
-            // it will either copy or move the args depending on reference type
-            auto& system = systems.emplace_back(std::make_unique<T>(std::forward<Args>(args)...));
-            system->setup(systems.size(), MAX_ENTITIES);
-            
-            if (system->update)
-            {
-                systems_updates.emplace_back(system->update);
-            }
-
-            return static_cast<T*>(system.get());
-        }
-
-	    /**
-	     * \brief Reserves size for all the components and entities
-	     * \param number_of_entities How many entities that the world should contain
-	     */
-	    void reserve(std::size_t number_of_entities)
-        {
-            for (size_t i = 0; i < component_count; ++i)
-            {
-                if (components[i])
-                {
-                    components[i]->reserve(number_of_entities);
-                }
-            }
-
-            entity_repository.reserve(number_of_entities);
-        }
-
-	    /**
-	     * \brief Creates a new entity
-	     * \return The newly created entity
-	     */
 	    entity create_entity()
         {
             return entity_repository.create();
         }
 
-	    /**
-	     * \brief Removes the entity and updates the systems and component array
-	     * \param entity The entity that is being removed
-	     */
 	    void remove_entity(entity entity)
         {
             for (auto& component : components)
@@ -95,12 +65,6 @@ namespace ecs
             entity_repository.remove(entity);
         }
 
-	    /**
-	     * \brief Checks if entity has component
-	     * \tparam T Component type
-	     * \param entity The entity that is being checked
-	     * \return 
-	     */
 	    template<typename T>
         bool has_component(entity entity) const
         {
@@ -108,12 +72,6 @@ namespace ecs
             return entity_repository.get_entity(entity)[T::type];
         }
 
-	    /**
-	     * \brief Checks if entity has components
-	     * \tparam Ts Component types
-	     * \param entity The entity that is being checked
-	     * \return 
-	     */
 	    template<typename ...Ts>
         bool has_components(entity entity) const
         {
@@ -152,12 +110,12 @@ namespace ecs
             return get_component_array<T>()->get(entity);
         }
 
-        template<typename ...Ts>
-        std::tuple<Ts&...> get_components(entity entity)
-        {
-            check_component_types<Ts...>();
-            return std::tie(get_component_array<Ts>()->get(entity)...);
-        }
+		template<typename ...Ts>
+		std::tuple<Ts&...> get_components(entity entity)
+		{
+		    check_component_types<Ts...>();
+		    return std::tie(get_component_array<Ts>()->get(entity)...);
+		}
 
         template<typename ...Ts>
         std::tuple<const Ts&...> get_components(entity entity) const
@@ -192,45 +150,29 @@ namespace ecs
             }
         }
 
-        const int get_width() const
-        {
-            return width;
-        }
-
-        const int get_height() const
-        {
-            return height;
-        }
-
-        void update(float dt) const
-        {
-		    for (auto& system_update : systems_updates)
-		    {
-                system_update(dt);
-		    }
-	    }
-
+        /*
+         * ENTITY FUNCTIONS
+         */
         bool is_alive(entity entity) const
 	    {
             return entity_repository.is_alive(entity);
 	    }
 
         /*
-         * SPATIAL GRID
+         * SYSTEM FUNCTIONS
          */
-        void update_grid(ecs::entity entity, const SDL_FRect& new_rect_data)
-	    {
-            spatial_grid.update(entity, new_rect_data);
-	    }
-
-        void insert_to_grid(ecs::entity entity, const SDL_FRect& rect_data)
+        template<typename T, typename ...Args>
+        T* create_system(Args&& ...args)
         {
-            spatial_grid.insert(entity, rect_data);
-        }
+            auto& system = systems.emplace_back(std::make_unique<T>(std::forward<Args>(args)...));
+            system->setup(systems.size(), MAX_ENTITIES);
 
-        void remove_from_grid(ecs::entity entity)
-        {
-            spatial_grid.remove(entity);
+            if (system->update)
+            {
+                systems_updates.emplace_back(system->update);
+            }
+
+            return static_cast<T*>(system.get());
         }
 
 		template<typename... Ts>
@@ -239,23 +181,88 @@ namespace ecs
 		    std::bitset<component_count> include_all_components;
 		    (include_all_components.set(Ts::type), ...);
 
-		    return std::move(spatial_grid.find_nearby(rect_data, [&](ecs::entity entity)
-		    {
+            return std::move(spatial_structure->find_nearby(rect_data, [&](ecs::entity entity)
+                {
                     return (excluded_entities.empty() || !excluded_entities.contains(entity))
-		    				&& (!include_all_components.any()
-								|| (include_all_components.any() && has_components(entity, include_all_components)));
-		    }));
+                        && (!include_all_components.any()
+                            || (include_all_components.any() && has_components(entity, include_all_components)));
+                }));
 		}
-        
-    private:
-        int width;
-        int height;
-        std::array<std::unique_ptr<base_component_array>, component_count> components{};
-        entities::entity_repository<component_count> entity_repository{};
-        std::vector<std::unique_ptr<system<component_count, system_count>>> systems{};
-        std::vector<update_func> systems_updates{};
-		collision::spatial_grid<component_count, system_count> spatial_grid;
 
+        void update_grid(ecs::entity entity, const SDL_FRect& new_rect_data) const
+        {
+            spatial_structure->update(entity, new_rect_data);
+        }
+
+        void insert_to_grid(ecs::entity entity, const SDL_FRect& rect_data) const
+        {
+            spatial_structure->insert(entity, rect_data);
+        }
+
+        void remove_from_grid(ecs::entity entity) const
+        {
+            spatial_structure->remove(entity);
+        }
+
+        int get_width() const
+        {
+            return width;
+        }
+
+        int get_height() const
+        {
+            return height;
+        }
+
+        /*
+		 * WORLD FUNCTIONS
+		 */
+        void reserve(std::size_t number_of_entities)
+        {
+            for (size_t i = 0; i < component_count; ++i)
+            {
+                if (components[i])
+                {
+                    components[i]->reserve(number_of_entities);
+                }
+            }
+
+            entity_repository.reserve(number_of_entities);
+        }
+
+        void update(float dt) const
+        {
+            for (auto& system_update : systems_updates)
+            {
+                system_update(dt);
+            }
+        }
+
+        void clear()
+        {
+            for (const auto& system : systems)
+            {
+                system->clear();
+            }
+
+            for (size_t i = 0; i < component_count; ++i)
+            {
+                if (components[i])
+                {
+                    components[i]->clear();
+                }
+            }
+            
+            systems_updates.clear();
+            systems.clear();
+            entity_repository.clear();
+            spatial_structure->clear();
+        }
+
+    private:
+        /*
+         * COMPONENT FUNCTIONS
+         */
         template<typename T>
         void check_component_type() const
         {
@@ -273,10 +280,21 @@ namespace ecs
         {
             return static_cast<component_array<T, component_count>*>(components[T::type].get());
         }
+
         template<typename T>
         auto get_component_array() const
         {
             return static_cast<const component_array<T, component_count>*>(components[T::type].get());
         }
+        
+    private:
+        int width;
+        int height;
+
+        std::unique_ptr<collision::spatial_data_structure<ecs::entity>> spatial_structure;
+        entities::entity_repository<component_count> entity_repository;
+        std::array<std::unique_ptr<base_component_array>, component_count> components;
+        std::vector<std::unique_ptr<system<component_count, system_count>>> systems;
+        std::vector<update_func> systems_updates;
     };
 }

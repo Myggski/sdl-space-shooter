@@ -1,8 +1,12 @@
 #pragma once
 
-#include "application/keyboard.h"
 #include "ecs/system.h"
 #include "ecs/setup_data.h"
+
+namespace application
+{
+    class keyboard;
+}
 
 namespace ecs
 {
@@ -12,8 +16,11 @@ namespace ecs
         {
         public:
             player_input(ecs::world<MAX_COMPONENTS, MAX_SYSTEMS>& world, application::keyboard& keyboard);
+
         private:
             void check_input(const float dt) const;
+
+        private:
             application::keyboard& keyboard;
         };
     }

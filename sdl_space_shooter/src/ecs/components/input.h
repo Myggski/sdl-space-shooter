@@ -13,9 +13,12 @@ namespace ecs
 			input();
 			input(SDL_Scancode move_up, SDL_Scancode move_down, SDL_Scancode move_left, SDL_Scancode move_right, SDL_Scancode fire_laser);
 
+		public:
 			float x;
 			float y;
+
 			bool is_firing;
+			
 			SDL_Scancode move_up;
 			SDL_Scancode move_down;
 			SDL_Scancode move_left;

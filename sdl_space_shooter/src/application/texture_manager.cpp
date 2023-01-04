@@ -20,7 +20,7 @@ namespace application
         this->renderer = renderer;
     }
 
-	SDL_Texture* texture_manager::get_image(std::string file_path)
+	SDL_Texture* texture_manager::get_image(const std::string& file_path)
     {
         if (textures.contains(file_path)) { return textures.at(file_path); }
 
@@ -36,9 +36,25 @@ namespace application
         return texture;
     }
 
-    void texture_manager::draw_texture(SDL_Renderer* renderer, SDL_Texture* texture, const SDL_FRect& image_rect, double angle)
+	void texture_manager::draw_texture(SDL_Renderer* renderer, SDL_Texture* texture, const SDL_FRect& image_rect, double angle)
     {
 	    const SDL_FPoint center { image_rect.w / 2.f, image_rect.h / 2.f };
         SDL_RenderCopyExF(renderer, texture, nullptr, &image_rect, angle, &center, SDL_FLIP_NONE);
+    }
+
+    pixel_data texture_manager::get_pixels(const std::string& file_path)
+	{
+        SDL_Surface* surface = IMG_Load(file_path.c_str());
+        assert(surface);
+
+        const bool locked_surface = SDL_LockSurface(surface) >= 0;
+        assert(locked_surface);
+
+        Uint32* pixels = static_cast<Uint32*>(surface->pixels);
+        const pixel_data pixel_data{ surface, pixels, surface->format, surface->pitch, surface->w, surface->h };
+
+        SDL_UnlockSurface(surface);
+
+        return pixel_data;
     }
 }

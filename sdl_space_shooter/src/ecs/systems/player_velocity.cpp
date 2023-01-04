@@ -1,10 +1,10 @@
 ﻿#include "pch.h"
 
 #include "player_velocity.h"
+
 #include "ecs/components/input.h"
 #include "ecs/components/velocity.h"
 #include "ecs/world.h"
-#include "application/math.h"
 
 namespace ecs
 {

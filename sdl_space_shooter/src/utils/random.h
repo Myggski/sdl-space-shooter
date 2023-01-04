@@ -2,7 +2,7 @@
 
 #include <random>
 
-namespace application
+namespace utils
 {
     template<class T>
     using uniform_distribution =

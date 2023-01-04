@@ -1,13 +1,12 @@
 ﻿#pragma once
 
-#include "application/interval.h"
+#include "utils/interval.h"
 #include "ecs/system.h"
 #include "ecs/setup_data.h"
 
 namespace application
 {
     class texture_manager;
-
 }
 
 namespace ecs
@@ -19,17 +18,22 @@ namespace ecs
         public:
             enemy_spawner(ecs::world<MAX_COMPONENTS, MAX_SYSTEMS>& world, application::texture_manager& texture_manager);
             ~enemy_spawner() override;
+
         private:
             void spawn_enemy(const float dt);
-            std::unordered_map<std::string, std::pair<int, application::interval_function>> intervals;
+
+        private:
             application::texture_manager& texture_manager;
+
+            std::unordered_map<std::string, std::pair<int, utils::interval_function>> intervals;
+            utils::interval_function increase_spawning_interval;
+            utils::interval_function increase_spawning_enemies;
+
             float current_timer;
             float next_spawn_time;
             float max_spawn_timer;
             float min_spawn_timer;
             int number_of_enemies_to_spawn;
-            application::interval_function increase_spawning_interval;
-            application::interval_function increase_spawning_enemies;
         };
     }
 }

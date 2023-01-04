@@ -11,13 +11,14 @@ namespace ecs
         {
         public:
             damage_collision(ecs::world<MAX_COMPONENTS, MAX_SYSTEMS>& world);
-            void check_collision(const float dt);
-            void on_valid_entity_removed(entity entity) override;
+
         private:
-            void group_search(const std::vector<ecs::entity>& entities);
-            std::unordered_map<ecs::entity, std::future<std::unordered_set<ecs::entity>>> nearby_data_async;
-            void search_nearby_entities_async(const std::vector<entity>& entities);
+            void try_collide(const float dt) const;
+            std::unordered_map<ecs::entity, std::unordered_set<ecs::entity>> search_nearby_entities(const std::vector<entity>& entities) const;
+            std::unordered_map<ecs::entity, std::unordered_set<ecs::entity>> group_search(const std::vector<ecs::entity>& entities) const;
+            std::unordered_set<ecs::entity> check_for_collisions(const std::unordered_map<ecs::entity, std::unordered_set<ecs::entity>>& nearby_entities_data) const;
             std::unordered_set<ecs::entity> try_apply_damage(const ecs::entity entity, const std::unordered_set<ecs::entity>& nearby_entities) const;
+            void remove_dead_entities( const std::unordered_set<ecs::entity>& dead_entities) const;
             const SDL_FRect get_rect_data(entity entity) const;
         };
     }

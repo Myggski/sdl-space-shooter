@@ -4,7 +4,6 @@
 #include <numeric>
 #include <vector>
 #include <array>
-#include "ecs/world.h"
 
 namespace ecs
 {
@@ -14,12 +13,9 @@ namespace ecs
         class entity_repository
         {
         public:
-	        /**
-	         * \brief Reserves memory
-	         * \param number_of_entities Number of entities to reserve
-	         */
 	        void reserve(size_t number_of_entities)
             {
+                number_of_entities = number_of_entities;
                 killed_entities.reserve(number_of_entities);
                 std::iota(std::begin(killed_entities), std::end(killed_entities), 0);
                 alive_entities.resize(number_of_entities);
@@ -30,20 +26,22 @@ namespace ecs
                 }
             }
 
-            /**
-             * \brief Getter that return a list of entities
-             * \return List of entities with bitset of components
-             */
-            inline std::vector<std::bitset<component_count>>& get_entities()
+            void clear()
+	        {
+                killed_entities.clear();
+                alive_entities.clear();
+
+                for (auto& entity_to_component : entity_to_component_index)
+                {
+                    entity_to_component.clear();
+                }
+	        }
+
+            std::vector<std::bitset<component_count>>& get_entities()
             {
                 return alive_entities;
             }
 
-            /// <summary>
-            /// Getter that returns a specific entity
-            /// </summary>
-            /// <param name="entity">Entity is a bitset of components that defines the entity type</param>
-            /// <returns></returns>
             const std::bitset<component_count>& get_entity(entity entity) const
             {
                 return alive_entities[entity];
@@ -90,6 +88,7 @@ namespace ecs
             std::vector<std::bitset<component_count>> alive_entities{};
             std::array<std::vector<index>, component_count> entity_to_component_index;
             std::vector<entity> killed_entities{};
+            size_t number_of_entities;
         };
 
     }

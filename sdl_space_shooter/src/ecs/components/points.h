@@ -12,6 +12,7 @@ namespace ecs
 			points();
 			points(int total_points);
 
+		public:
 			int total_points;
 		};
 	}

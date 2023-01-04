@@ -8,7 +8,7 @@ namespace application
 		application_props(const char* name, int window_width, int window_height);
 
 		const char* name;
-		int window_width;
-		int window_height;
+		const int window_width;
+		const int window_height;
 	};
 }

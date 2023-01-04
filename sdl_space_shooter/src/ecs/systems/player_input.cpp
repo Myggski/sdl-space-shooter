@@ -1,9 +1,11 @@
 #include "pch.h"
 
 #include "player_input.h"
+
+#include "application/keyboard.h"
 #include "ecs/components/input.h"
 #include "ecs/world.h"
-#include "application/math.h"
+#include "utils/math.h"
 
 namespace ecs
 {
@@ -44,7 +46,7 @@ namespace ecs
                     input_x += 1.f;
                 }
 
-                const float magnitude = math::magnitude(input_x, input_y);
+                const float magnitude = utils::math::magnitude(input_x, input_y);
                 input.x = input_x / magnitude;
                 input.y = input_y / magnitude;
 

@@ -12,6 +12,7 @@ namespace ecs
 			position();
 			position(float x, float y);
 
+		public:
 			float x;
 			float y;
 			float old_x;

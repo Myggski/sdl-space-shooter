@@ -11,6 +11,7 @@ namespace ecs
         {
         public:
             player_velocity(ecs::world<MAX_COMPONENTS, MAX_SYSTEMS>& world);
+
         private:
             void update_velocity(const float dt) const;
         };

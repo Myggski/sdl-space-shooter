@@ -12,6 +12,7 @@ namespace ecs
 			health();
 			health(int max_health);
 
+		public:
 			int max_health;
 			int current_health;
 		};

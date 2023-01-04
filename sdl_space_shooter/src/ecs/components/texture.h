@@ -16,10 +16,11 @@ namespace ecs
 			texture();
 			texture(SDL_Texture* image, float width, float height);
 
+		public:
 			SDL_Texture* image;
+
 			float width;
-			float height;
-			size_t z_index;
+			float height;;
 		};
 	}
 }

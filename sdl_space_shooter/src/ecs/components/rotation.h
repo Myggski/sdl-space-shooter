@@ -12,6 +12,7 @@ namespace ecs
 			rotation();
 			rotation(double angle);
 
+		public:
 			double angle;
 		};
 	}

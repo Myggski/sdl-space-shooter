@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "component.h"
-#include "ecs/layers_types.h"
+#include "ecs/layer_types.h"
 
 namespace ecs
 {
@@ -11,9 +11,10 @@ namespace ecs
 		{
 		public:
 			layer();
-			layer(ecs::layers_types layer_type);
+			layer(layer_types layer_type);
 
-			ecs::layers_types layer_type;
+		public:
+			layer_types layer_type;
 			size_t z_index;
 		};
 	}

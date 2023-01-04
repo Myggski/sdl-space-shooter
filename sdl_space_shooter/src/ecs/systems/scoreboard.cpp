@@ -5,6 +5,7 @@
 #include "ecs/setup_data.h"
 #include "ecs/world.h"
 #include "ecs/components/points.h"
+#include "ecs/components/text.h"
 
 namespace ecs
 {

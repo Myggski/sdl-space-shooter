@@ -11,6 +11,7 @@ namespace ecs
         {
         public:
             time_removal(ecs::world<MAX_COMPONENTS, MAX_SYSTEMS>& world);
+
         private:
             void try_destroy(const float dt) const;
         };

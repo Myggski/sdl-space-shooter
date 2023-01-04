@@ -10,9 +10,9 @@
 #include "ecs/components/box_collider.h"
 #include "ecs/components/layer.h"
 #include "ecs/components/rotation.h"
-#include "ecs/components/text.h"
-#include "application/math.h"
+#include "ecs/components/text.h""
 #include "collision/aabb.h"
+#include "ecs/components/input.h"
 
 namespace ecs
 {
@@ -48,7 +48,7 @@ namespace ecs
         void draw_system::draw_text(ecs::entity entity) const
         {
             auto [position, text] = world.get_components<components::position, components::text>(entity);
-            font_manager::get_instance().draw(renderer, text.font_name, text.text_string, position.x, position.y);
+            application::font_manager::get_instance().draw(renderer, text.font_name, text.text_string, position.x, position.y);
         }
 
         void draw_system::draw_texture(ecs::entity entity) const
@@ -57,7 +57,7 @@ namespace ecs
 
             const double angle = world.has_component<components::rotation>(entity)
                 ? world.get_component<components::rotation>(entity).angle
-                : 0;
+                : 0.0;
 
             SDL_FRect texture_rect{ position.x, position.y, texture.width, texture.height };
             application::texture_manager::draw_texture(renderer, texture.image, texture_rect, angle);
@@ -68,6 +68,7 @@ namespace ecs
             if (is_dirty)
             {
                 draw_entities = get_entities();
+
                 std::unordered_map<ecs::entity, size_t> z_index_values;
                 z_index_values.reserve(draw_entities.size());
 
@@ -77,9 +78,7 @@ namespace ecs
                 }
 
                 std::ranges::sort(draw_entities, [&](const entity& a, const entity& b) {
-                    auto d = z_index_values[a];
-                    auto e = z_index_values[b];
-                    return d < e;
+						return z_index_values[a] < z_index_values[b];
                     });
 
                 is_dirty = false;

@@ -15,9 +15,9 @@ namespace ecs
 {
 	namespace entities
 	{
-		constexpr float player_collision_percentage = 0.8f;
-		constexpr float player_width = 98.f;
-		constexpr float player_height = 75.f;
+		constexpr float player_collision_percentage = 0.8888889f;
+		constexpr float player_width = 90.f;
+		constexpr float player_height = 160.f;
 		constexpr float player_collision_width = player_width * player_collision_percentage;
 		constexpr float player_collision_height = player_height * player_collision_percentage;
 		constexpr float player_collision_offset_x = player_width * (1.f - player_collision_percentage) / 2.f;
@@ -27,24 +27,24 @@ namespace ecs
 		inline entity create_player(world<component_count, system_count>& world, application::texture_manager& texture_manager, const components::position& position)
 		{
 			const auto entity = world.create_entity();
-			world.add_component<ecs::components::position>(entity, position);
-			world.add_component<ecs::components::velocity>(entity, ecs::components::velocity(0, 0));
-			world.add_component<ecs::components::damage>(entity, ecs::components::damage(1));
-			world.add_component<ecs::components::layer>(entity, ecs::components::layer(layers_types::player));
-			world.add_component<ecs::components::rotation>(entity, ecs::components::rotation(90));
-			world.add_component<ecs::components::box_collider>(entity, ecs::components::box_collider(
+			world.add_component<components::position>(entity, position);
+			world.add_component<components::velocity>(entity, components::velocity(0, 0));
+			world.add_component<components::damage>(entity, components::damage(1));
+			world.add_component<components::rotation>(entity, components::rotation(0));
+			world.add_component<components::layer>(entity, components::layer(layer_types::player));
+			world.add_component<components::box_collider>(entity, components::box_collider(
 				player_collision_width,
 				player_collision_height,
-				player_collision_offset_x,
-				player_collision_offset_y,
-				static_cast<size_t>(layers_types::enemy)
+				0,
+				0,
+				static_cast<size_t>(layer_types::enemy)
 			));
-			world.add_component<ecs::components::texture>(entity, ecs::components::texture(
+			world.add_component<components::texture>(entity, components::texture(
 				texture_manager.get_image("resources/player.png"),
 				player_width,
 				player_height
 			));
-			world.add_component<ecs::components::input>(entity, ecs::components::input(
+			world.add_component<components::input>(entity, components::input(
 				SDL_SCANCODE_W,
 				SDL_SCANCODE_S,
 				SDL_SCANCODE_A,

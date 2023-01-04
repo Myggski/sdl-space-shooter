@@ -3,7 +3,8 @@
 
 namespace application
 {
-	timer::timer() : delta_time(dt), previous_ticks(0), dt(0) { }
+	timer::timer()
+		: delta_time(dt), previous_ticks(0), dt(0) { }
 
 	void timer::init()
 	{

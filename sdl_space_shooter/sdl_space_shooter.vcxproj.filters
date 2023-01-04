@@ -30,7 +30,7 @@
     <ClCompile Include="src\application\application.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\window_data.cpp">
+    <ClCompile Include="src\application\window_data.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\application\application_props.cpp">
@@ -84,7 +84,7 @@
     <ClCompile Include="src\ecs\systems\enemy_spawner.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\application\interval.cpp">
+    <ClCompile Include="src\utils\interval.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\ecs\systems\player_velocity.cpp">
@@ -114,6 +114,24 @@
     <ClCompile Include="src\ecs\components\points.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\wave_function_collapse\tile_data.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\wave_function_collapse\wave_function_collapse.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\wave_function_collapse\wave_cell.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\wave_function_collapse\hex_color_utils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\wave_function_collapse\state\wave_state.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\wave_function_collapse\state\commands\remove_entropy_command.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ecs\entity.h">
@@ -131,7 +149,7 @@
     <ClInclude Include="src\application\application_props.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\window_data.h">
+    <ClInclude Include="src\application\window_data.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\application\events.h">
@@ -182,7 +200,7 @@
     <ClInclude Include="src\ecs\systems\draw_system.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\application\math.h">
+    <ClInclude Include="src\utils\math.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\collision\spatial_grid.h">
@@ -218,10 +236,10 @@
     <ClInclude Include="src\ecs\systems\enemy_spawner.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\application\interval.h">
+    <ClInclude Include="src\utils\interval.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\application\random.h">
+    <ClInclude Include="src\utils\random.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\ecs\entities\laser.h">
@@ -233,7 +251,7 @@
     <ClInclude Include="src\ecs\systems\laser_spawner.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\ecs\layers_types.h">
+    <ClInclude Include="src\ecs\layer_types.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\ecs\components\layer.h">
@@ -266,30 +284,198 @@
     <ClInclude Include="src\ecs\components\points.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\components\components.h">
+    <ClInclude Include="src\collision\quad_tree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\collision\spatial_data_structure.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\collision\spatial_data_structure_factory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ecs\level.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\wave_function_collapse\wave_function_collapse.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\wave_function_collapse\tile_data.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\wave_function_collapse\image_scan.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\wave_function_collapse\edge_direction_types.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\wave_function_collapse\wave_cell.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\wave_function_collapse\hex_color_utils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\wave_function_collapse\state\wave_state.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\wave_function_collapse\state\commands\remove_entropy_command.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\key_generator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\sdl_operators.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\wave_function_collapse\tile_factory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="resources\meteor0.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="resources\meteor1.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="resources\meteor2.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="resources\meteor3.png">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="resources\player.png">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="resources\background.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="resources\laser.png">
+    <Image Include="resources\wfc\circuit\bridge.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\wfc\circuit\component.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\wfc\circuit\connection.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\wfc\circuit\corner.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\wfc\circuit\dskew.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\wfc\circuit\skew.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\wfc\circuit\substrate.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\wfc\circuit\t.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\wfc\circuit\track.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\wfc\circuit\transition.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\wfc\circuit\turn.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\wfc\circuit\viad.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\wfc\circuit\vias.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\wfc\circuit\wire.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\wfc\circle\w_quarter.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\wfc\circle\b.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\wfc\circle\b_half.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\wfc\circle\b_i.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\wfc\circle\b_quarter.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\wfc\circle\w.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\wfc\circle\w_half.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\wfc\circle\w_i.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\wfc\custom\0.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\wfc\custom\1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\wfc\custom\2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\wfc\custom\3.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\wfc\custom\4.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\wfc\custom\5.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\wfc\custom\6.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\wfc\custom\7.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\wfc\custom\8.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\wfc\cyber-circuit\0.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\wfc\cyber-circuit\1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\wfc\cyber-circuit\2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\wfc\cyber-circuit\3.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\wfc\cyber-circuit\4.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\wfc\cyber-circuit\5.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\wfc\cyber-circuit\6.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\wfc\cyber-circuit\7.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\wfc\cyber-circuit\8.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\wfc\cyber-circuit\9.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\laser0.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\laser1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\skull_0.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\skull_1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\skull_2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\skull_3.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

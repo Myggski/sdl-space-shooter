@@ -12,6 +12,7 @@ namespace ecs
 			velocity();
 			velocity(float x, float y);
 
+		public:
 			float x;
 			float y;
 		};

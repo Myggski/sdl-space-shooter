@@ -20,15 +20,24 @@ namespace ecs
                 component_index_to_entity.reserve(number_of_entities);
             }
 
+            void clear() override
+            {
+                component_values.clear();
+                component_index_to_entity.clear();
+                entity_to_component_index.clear();
+            }
+
             T& get(entity entity)
             {
                 auto index = entity_to_component_index[entity];
                 return component_values[index];
             }
+
             const T& get(entity entity) const
             {
                 return component_values[entity_to_component_index[entity]];
             }
+
             template<typename... Args>
             void add(entity entity, Args&&... args)
             {

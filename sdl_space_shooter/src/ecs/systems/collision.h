@@ -11,10 +11,11 @@ namespace ecs
         {
         public:
             collision(ecs::world<MAX_COMPONENTS, MAX_SYSTEMS>& world);
-            void on_valid_entity_added(entity entity) override;
-            void on_valid_entity_removed(entity entity) override;
+
         private:
             const SDL_FRect get_rect_data(entity entity) const;
+            void on_valid_entity_added(entity entity) override;
+            void on_valid_entity_removed(entity entity) override;
         };
     }
 }

@@ -16,6 +16,7 @@ namespace ecs
 			box_collider();
 			box_collider(float width, float height, float offset_x = 0, float offset_y = 0, collide_layer collides_with = { 0 });
 
+		public:
 			float width;
 			float height;
 			float offset_x;

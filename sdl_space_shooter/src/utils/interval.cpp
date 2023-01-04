@@ -1,7 +1,7 @@
 ﻿#include "pch.h"
 #include "interval.h"
 
-namespace application
+namespace utils
 {
     interval& interval::get_instance()
     {

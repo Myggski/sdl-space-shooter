@@ -12,8 +12,9 @@ namespace ecs
 			text();
 			text(std::string text_string, std::string font_name = "default");
 
+		public:
 			std::string text_string;
-			std::string font_name;
+			std::string font_name; // TODO - This will probably never happen, but change this into a enum class
 		};
 	}
 }

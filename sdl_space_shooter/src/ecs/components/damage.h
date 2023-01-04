@@ -12,6 +12,7 @@ namespace ecs
 			damage();
 			damage(int damage_to_deal);
 
+		public:
 			int damage_to_deal;
 		};
 	}

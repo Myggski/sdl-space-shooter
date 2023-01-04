@@ -20,17 +20,13 @@ namespace ecs
         virtual ~system() = default;
 
     protected:
-        ecs::world<component_count, system_count>& world;
+        friend ecs::world<component_count, system_count>;
 
         void set_update(update_func update_func)
         {
             update = update_func;
         }
 
-        /**
-         * \brief Adds the component types as requirements for the system
-         * \tparam Ts Is a list of components
-         */
         template<typename ...Ts>
         void set_all_requirements()
         {
@@ -46,13 +42,9 @@ namespace ecs
         template<typename ...Ts>
         void set_none_requirements()
         {
-            (any_requirements.set(Ts::type), ...);
+            (none_requirements.set(Ts::type), ...);
         }
 
-        /**
-         * \brief Returns valid entities
-         * \return Valid entities that is meeting the component requirements for the system
-         */
         const std::vector<entity>& get_entities() const
         {
             return valid_entities;
@@ -60,17 +52,8 @@ namespace ecs
 
         virtual void on_valid_entity_added([[maybe_unused]] entity entity) { }
         virtual void on_valid_entity_removed([[maybe_unused]] entity entity) { }
+
     private:
-        friend ecs::world<component_count, system_count>;
-
-        update_func update;
-        std::bitset<component_count> all_requirements;
-        std::bitset<component_count> any_requirements;
-        std::bitset<component_count> none_requirements;
-        std::size_t system_id{};
-        std::vector<entity> valid_entities;
-        std::unordered_map<entity, index> entity_to_valid_entity;
-
         /**
          * \brief Sets the id of the system
          * \param system_id is the index of the system
@@ -148,11 +131,11 @@ namespace ecs
             {
                 return;
             }
-
-            const auto derp = entity_to_valid_entity[entity];
+            
             on_valid_entity_removed(entity);
 
             const auto index = entity_to_valid_entity[entity];
+
             if (index == invalid_entity_id)
             {
                 return;
@@ -164,5 +147,25 @@ namespace ecs
             valid_entities[index] = valid_entities.back();
             valid_entities.pop_back();
         }
+
+        void clear()
+        {
+	        for (const auto& entity : valid_entities)
+	        {
+                remove_entity(entity);
+	        }
+        }
+
+    protected:
+        ecs::world<component_count, system_count>& world;
+
+    private:
+        update_func update;
+        std::bitset<component_count> all_requirements;
+        std::bitset<component_count> any_requirements;
+        std::bitset<component_count> none_requirements;
+        std::size_t system_id{};
+        std::vector<entity> valid_entities;
+        std::unordered_map<entity, index> entity_to_valid_entity;
     };
 }

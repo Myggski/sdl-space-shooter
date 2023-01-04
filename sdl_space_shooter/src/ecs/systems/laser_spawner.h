@@ -16,10 +16,13 @@ namespace ecs
         {
         public:
             laser_spawner(ecs::world<MAX_COMPONENTS, MAX_SYSTEMS>& world, application::texture_manager& texture_manager);
+
         private:
             void spawn_laser(const float dt);
-            float delay;
+
+        private:
             application::texture_manager& texture_manager;
+            float delay;
         };
     }
 }

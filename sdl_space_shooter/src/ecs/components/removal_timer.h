@@ -12,6 +12,7 @@ namespace ecs
 			removal_timer();
 			removal_timer(float current_time_seconds);
 
+		public:
 			float current_time;
 		};
 	}

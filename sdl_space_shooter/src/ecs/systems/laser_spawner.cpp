@@ -9,11 +9,11 @@ namespace ecs
 {
     namespace systems
     {
-        constexpr float SPEED = 30;
-        constexpr float FRICTION = 3.5;
+        constexpr float laser_delay = 0.06f;
+        static bool shooting_zero = false;
 
         laser_spawner::laser_spawner(ecs::world<MAX_COMPONENTS, MAX_SYSTEMS>& world, application::texture_manager& texture_manager)
-            : system(world), texture_manager(texture_manager), delay(0.25)
+            : system(world), texture_manager(texture_manager), delay(laser_delay)
         {
             set_all_requirements<components::input>();
             set_update([&](const float dt)
@@ -28,10 +28,12 @@ namespace ecs
             {
                 const auto [input, position, texture, velocity] = world.get_components<components::input, components::position, components::texture, components::velocity>(entity);
 
-                if (delay >= 0.25 && input.is_firing)
+                if (delay >= laser_delay && input.is_firing)
                 {
-                    components::position laser_position = components::position(position.x + texture.width + velocity.x * 2, position.y + 7.5f);
-                    entities::create_laser(world, texture_manager, laser_position);
+                    components::position laser_position = components::position(position.x + (texture.width / 2.f), position.y + (texture.height / 2.f) - (55.f / 2.f));
+                    entities::create_laser(world, texture_manager, laser_position, shooting_zero);
+
+                    shooting_zero = !shooting_zero;
                     delay = 0;
                 }
 
