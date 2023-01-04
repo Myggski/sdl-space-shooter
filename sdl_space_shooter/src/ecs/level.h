@@ -45,11 +45,11 @@ namespace game
 
 			register_components();
 
-			//create_systems(renderer, texture_manager, keyboard);
+			create_systems(renderer, texture_manager, keyboard);
 
-			//ecs::entities::create_player(world, texture_manager, ecs::components::position(128.f, 360.f));
+			ecs::entities::create_player(world, texture_manager, ecs::components::position(128.f, 360.f));
 
-			//setup_scoreboard();
+			setup_scoreboard();
 		}
 
 		void update(const float dt)
